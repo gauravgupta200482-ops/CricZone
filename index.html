@@ -33,10 +33,6 @@
         .btn-danger { background: var(--danger); }
         .btn-warning { background: var(--warning); color: #000; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.95rem; }
-        th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--border); }
-        th { color: var(--text-muted); font-weight: 600; }
-        
         .player-card-box { background: rgba(37, 99, 235, 0.08); border: 1px solid var(--border); padding: 16px; border-radius: 10px; margin-bottom: 12px; }
     </style>
 </head>
@@ -45,15 +41,15 @@
     <header>
         <div class="logo">🏏 CricZone Pro Elite</div>
         <div style="display: flex; gap: 15px; align-items: center;">
-            <span id="header-purse" style="font-weight: 700; background: rgba(16,185,129,0.15); color: var(--accent); padding: 8px 16px; border-radius: 20px;">💰 Purse: $100.0M</span>
+            <span id="header-purse" style="font-weight: 700; background: rgba(16,185,129,0.15); color: var(--accent); padding: 8px 16px; border-radius: 20px;">💰 Purse: $70.0M</span>
             <span id="header-coins" style="font-weight: 700; background: rgba(245,158,11,0.15); color: var(--warning); padding: 8px 16px; border-radius: 20px;">🪙 0 Coins</span>
         </div>
     </header>
 
     <nav>
         <button class="active" onclick="switchTab('quiz', this)">1. Infinite Cricket Quiz</button>
-        <button onclick="switchTab('auction', this)">2. 10-Team IPL Mega Auction</button>
-        <button onclick="switchTab('tournament', this)">3. Playing XI & Match Simulator</button>
+        <button onclick="switchTab('auction', this)">2. IPL Mega Auction ($70M)</button>
+        <button onclick="switchTab('tournament', this)">3. Playing XI & Scorecards</button>
     </nav>
 
     <div class="container">
@@ -61,8 +57,8 @@
         <!-- TAB 1: INFINITE QUIZ -->
         <div id="quiz" class="tab-section active">
             <div class="card">
-                <h2>🧠 Infinite Cricket Knowledge Quiz (Randomized Engine)</h2>
-                <p style="color: var(--text-muted);">Test your global cricket IQ. Correct answers boost your streak. One wrong answer resets your streak to 0 and shuffles an entirely new randomized question set.</p>
+                <h2>🧠 Infinite Cricket Knowledge Quiz</h2>
+                <p style="color: var(--text-muted);">Test your global cricket IQ. Correct answers increase your streak. A single wrong answer resets your streak to 0 and shuffles new procedural questions.</p>
                 <div style="background: var(--bg); border: 1px solid var(--border); padding: 24px; border-radius: 10px; margin-top: 20px;">
                     <h3>Current Streak: <span id="quiz-streak" style="color: var(--accent);">0</span> Correct Answers</h3>
                     <h3 id="quiz-q" style="margin-top: 15px; font-size: 1.2rem;">Loading question...</h3>
@@ -72,17 +68,17 @@
             </div>
         </div>
 
-        <!-- TAB 2: 10-TEAM IPL MEGA AUCTION -->
+        <!-- TAB 2: 10-TEAM IPL MEGA AUCTION ($70M) -->
         <div id="auction" class="tab-section">
             <div class="card">
-                <h2>⚡ 10-Team IPL Mega Auction ($100M Purse | 100+ Players)</h2>
-                <p style="color: var(--text-muted);">Compete against aggressive AI bids from all 10 IPL franchises (MI, CSK, RCB, KKR, SRH, DC, RR, LSG, GT, PBKS). You must secure at least **11 players** to unlock tournament mode!</p>
+                <h2>⚡ IPL Mega Auction ($70M Budget | 25 Players: 10 Batsmen, 10 Bowlers, 5 All-Rounders)</h2>
+                <p style="color: var(--text-muted);">Rival AI franchises bid aggressively, pushing bids up to $8M, $9M, and beyond. Secure at least 11 players to unlock the tournament matches.</p>
                 
                 <div class="grid-2" style="margin-top: 20px;">
                     <div style="background: var(--bg); border: 1px solid var(--border); padding: 24px; border-radius: 10px;">
-                        <span id="auc-category" style="color: var(--warning); font-weight: 700; text-transform: uppercase;">Live Lot on Auction</span>
+                        <span id="auc-category" style="color: var(--warning); font-weight: 700; text-transform: uppercase;">Current Player on Auction</span>
                         <h2 id="auc-player-name" style="margin: 8px 0;">Loading Player...</h2>
-                        <div id="auc-card-details" style="color: var(--text-muted); margin: 10px 0 20px 0; line-height: 1.6;">Stats loading...</div>
+                        <div id="auc-card-details" style="color: var(--text-muted); margin: 10px 0 20px 0; line-height: 1.6;">Fetching stats...</div>
                         
                         <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 24px;">
                             Current Bid: <span id="auc-player-price" style="color: var(--accent);">$2.0M</span> 
@@ -90,37 +86,37 @@
                         </div>
 
                         <div id="auc-controls" style="display: flex; gap: 12px; flex-wrap: wrap;">
-                            <button class="btn btn-success" onclick="placeAuctionBid(1.0)">Bid +$1.0M</button>
-                            <button class="btn btn-success" onclick="placeAuctionBid(2.5)" style="background: #047857;">Aggressive Bid +$2.5M</button>
+                            <button class="btn btn-success" onclick="placeAuctionBid(2.0)">Bid +$2.0M</button>
+                            <button class="btn btn-success" onclick="placeAuctionBid(4.0)" style="background: #047857;">Aggressive Bid +$4.0M</button>
                             <button class="btn btn-danger" onclick="passAuctionPlayer()">Pass / Drop</button>
                         </div>
                     </div>
 
                     <div style="background: var(--bg); border: 1px solid var(--border); padding: 24px; border-radius: 10px;">
                         <h3 style="margin-top: 0;">Franchise Treasury</h3>
-                        <p><strong>Purse Remaining:</strong> <span id="team-purse" style="color: var(--accent);">$100.0M</span></p>
+                        <p><strong>Remaining Budget:</strong> <span id="team-purse" style="color: var(--accent);">$70.0M</span></p>
                         <p><strong>Players Signed:</strong> <span id="team-count">0</span> / 11 (Minimum required)</p>
                         <hr style="border:0; border-top:1px solid var(--border);">
-                        <h4>Your Roster:</h4>
+                        <h4>Your Squad:</h4>
                         <div id="team-roster" style="max-height: 250px; overflow-y: auto;">
-                            <p style="color: var(--text-muted);">No players signed yet.</p>
+                            No players signed yet.
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 3: PLAYING XI & MATCH SIMULATOR -->
+        <!-- TAB 3: MATCH & SCORECARDS -->
         <div id="tournament" class="tab-section">
             <div class="card">
-                <h2>🏆 Playing XI & Full Match Scorecard Simulator</h2>
-                <p style="color: var(--text-muted);">Once you have signed at least 11 players in the auction, simulate knockout matches against AI IPL franchises complete with full scorecards and run tallies!</p>
+                <h2>🏆 Playing XI & Match Scorecard Simulator</h2>
+                <p style="color: var(--text-muted);">Once you have signed at least 11 players in the auction, simulate knockout matches against AI IPL franchises and review full scorecards.</p>
                 
                 <div class="grid-2" style="margin-top: 20px;">
                     <div>
                         <h3>Your Locked Playing XI</h3>
                         <div id="playing-xi-box" style="background: var(--bg); border: 1px solid var(--border); padding: 20px; border-radius: 10px; min-height: 250px;">
-                            <p style="color: var(--text-muted);">You need at least 11 players in your squad to unlock matches.</p>
+                            Minimum 11 players required to unlock match simulations.
                         </div>
                     </div>
                     
@@ -140,10 +136,10 @@
 
     <script>
         let appState = {
-            purse: 100.0,
+            purse: 70.0,
             coins: 0,
             squad: [],
-            tourneyStage: 0 // 0: Quarters, 1: Semis, 2: Finals
+            tourneyStage: 0
         };
 
         function switchTab(tabId, btn) {
@@ -153,17 +149,13 @@
             btn.classList.add('active');
         }
 
-        // --- 1. QUIZ ENGINE ---
+        // --- QUIZ ENGINE ---
         const quizBank = [
             { q: "Who holds the record for the highest individual score in Test cricket (400* vs England)?", opts: ["Brian Lara", "Sachin Tendulkar", "Don Bradman", "Virender Sehwag"], ans: 0 },
             { q: "Which bowler holds the record for the most international wickets across all formats?", opts: ["Muttiah Muralitharan", "Shane Warne", "James Anderson", "Anil Kumble"], ans: 0 },
-            { q: "In what year did India win their second ICC Men's Cricket World Cup?", opts: ["2011", "2015", "2007", "1983"], ans: 0 },
-            { q: "Which player hit six sixes in an over during the 2007 ICC T20 World Cup?", opts: ["Yuvraj Singh", "Herschelle Gibbs", "Chris Gayle", "MS Dhoni"], ans: 0 },
-            { q: "What is the official length of a standard cricket pitch between stumps?", opts: ["22 yards", "20 yards", "24 yards", "18 yards"], ans: 0 }
+            { q: "In what year did India win their second ICC Men's Cricket World Cup?", opts: ["2011", "2015", "2007", "1983"], ans: 0 }
         ];
-
-        let quizIdx = 0;
-        let streak = 0;
+        let quizIdx = 0, streak = 0;
 
         function loadQuiz() {
             let q = quizBank[quizIdx % quizBank.length];
@@ -179,70 +171,61 @@
         function answerQuiz(selected, correct) {
             if (selected === correct) {
                 streak++;
-                quizIdx = Math.floor(Math.random() * 500);
+                quizIdx = Math.floor(Math.random() * 50);
                 document.getElementById('quiz-streak').innerText = streak;
                 document.getElementById('quiz-msg').style.color = "var(--accent)";
                 document.getElementById('quiz-msg').innerText = "Correct! Advancing sequence...";
                 setTimeout(loadQuiz, 600);
             } else {
-                streak = 0;
-                quizIdx = 0;
+                streak = 0; quizIdx = 0;
                 document.getElementById('quiz-streak').innerText = streak;
                 document.getElementById('quiz-msg').style.color = "var(--danger)";
-                document.getElementById('quiz-msg').innerText = "Incorrect! Streak reset to 0. Shuffled new question set!";
+                document.getElementById('quiz-msg').innerText = "Incorrect! Streak reset to 0.";
                 setTimeout(loadQuiz, 1000);
             }
         }
 
-        // --- 2. 100+ REAL IPL PLAYER DATABASE & AUCTION ---
-        const iplTeams = ["Mumbai Indians", "Chennai Super Kings", "Royal Challengers Bengaluru", "Kolkata Knight Riders", "Sunrisers Hyderabad", "Delhi Capitals", "Rajasthan Royals", "Lucknow Super Giants", "Gujarat Titans", "Punjab Kings"];
-        
-        // Comprehensive 100+ IPL player roster pool
+        // --- EXACT 25 PLAYERS POOL (10 Batsmen, 10 Bowlers, 5 All-rounders) ---
         const auctionPool = [
-            { name: "Virat Kohli", role: "Batter", matches: 252, runs: 8004, wickets: 4, base: 2.0 },
-            { name: "Jasprit Bumrah", role: "Fast Bowler", matches: 133, runs: 65, wickets: 165, base: 2.0 },
-            { name: "MS Dhoni", role: "Wicketkeeper", matches: 264, runs: 5243, stumpings: 42, base: 2.0 },
-            { name: "Rohit Sharma", role: "Batter", matches: 257, runs: 6628, wickets: 15, base: 2.0 },
-            { name: "Rashid Khan", role: "Spinner", matches: 121, runs: 450, wickets: 149, base: 2.0 },
-            { name: "Vaibhav Suryavanshi", role: "Young Opener", matches: 5, runs: 180, wickets: 0, base: 0.5 },
-            { name: "Mayank Yadav", role: "Fast Bowler", matches: 10, runs: 5, wickets: 20, base: 1.0 },
-            { name: "Travis Head", role: "Opener", matches: 26, runs: 890, wickets: 2, base: 1.5 },
-            { name: "Heinrich Klaasen", role: "Wicketkeeper Batter", matches: 34, runs: 950, stumpings: 8, base: 1.5 },
-            { name: "Pat Cummins", role: "All-Rounder", matches: 62, runs: 410, wickets: 70, base: 2.0 },
-            { name: "Sunil Narine", role: "All-Rounder", matches: 177, runs: 1400, wickets: 180, base: 2.0 },
-            { name: "Sanju Samson", role: "Wicketkeeper Batter", matches: 160, runs: 4400, stumpings: 35, base: 1.8 },
-            { name: "Suryakumar Yadav", role: "Batter", matches: 150, runs: 3594, wickets: 0, base: 2.0 },
+            // 10 Batsmen
+            { name: "Virat Kohli", role: "Batsman", matches: 252, runs: 8004, base: 2.0 },
+            { name: "Rohit Sharma", role: "Batsman", matches: 257, runs: 6628, base: 2.0 },
+            { name: "Shubman Gill", role: "Batsman", matches: 103, runs: 3216, base: 2.0 },
+            { name: "Suryakumar Yadav", role: "Batsman", matches: 150, runs: 3594, base: 2.0 },
+            { name: "Yashasvi Jaiswal", role: "Batsman", matches: 53, runs: 1550, base: 1.5 },
+            { name: "Rinku Singh", role: "Batsman", matches: 45, runs: 893, base: 1.2 },
+            { name: "Travis Head", role: "Batsman", matches: 26, runs: 890, base: 1.5 },
+            { name: "Ruturaj Gaikwad", role: "Batsman", matches: 66, runs: 2380, base: 1.8 },
+            { name: "Virat Singh", role: "Batsman", matches: 20, runs: 450, base: 0.8 },
+            { name: "Devdutt Padikkal", role: "Batsman", matches: 60, runs: 1520, base: 1.0 },
+
+            // 10 Bowlers
+            { name: "Jasprit Bumrah", role: "Bowler", matches: 133, wickets: 165, base: 2.0 },
+            { name: "Rashid Khan", role: "Bowler", matches: 121, wickets: 149, base: 2.0 },
+            { name: "Arshdeep Singh", role: "Bowler", matches: 65, wickets: 76, base: 1.5 },
+            { name: "Mayank Yadav", role: "Bowler", matches: 10, wickets: 20, base: 1.0 },
+            { name: "Yuzvendra Chahal", role: "Bowler", matches: 160, wickets: 205, base: 2.0 },
+            { name: "Mohammed Shami", role: "Bowler", matches: 110, wickets: 127, base: 2.0 },
+            { name: "Kagiso Rabada", role: "Bowler", matches: 72, wickets: 117, base: 1.8 },
+            { name: "Trent Boult", role: "Bowler", matches: 104, wickets: 121, base: 1.8 },
+            { name: "Kuldeep Yadav", role: "Bowler", matches: 79, wickets: 83, base: 1.5 },
+            { name: "Harshal Patel", role: "Bowler", matches: 95, wickets: 115, base: 1.2 },
+
+            // 5 All-Rounders
             { name: "Hardik Pandya", role: "All-Rounder", matches: 137, runs: 2526, wickets: 64, base: 2.0 },
-            { name: "Rishabh Pant", role: "Wicketkeeper", matches: 111, runs: 3284, stumpings: 30, base: 2.0 },
             { name: "Ravindra Jadeja", role: "All-Rounder", matches: 240, runs: 2959, wickets: 160, base: 2.0 },
-            { name: "Yashasvi Jaiswal", role: "Opener", matches: 53, runs: 1550, wickets: 0, base: 1.5 },
-            { name: "Shubman Gill", role: "Batter", matches: 103, runs: 3216, wickets: 0, base: 2.0 },
-            { name: "Arshdeep Singh", role: "Fast Bowler", matches: 65, runs: 15, wickets: 76, base: 1.5 },
-            { name: "Rinku Singh", role: "Finisher", matches: 45, runs: 893, wickets: 0, base: 1.2 }
+            { name: "Sunil Narine", role: "All-Rounder", matches: 177, runs: 1400, wickets: 180, base: 2.0 },
+            { name: "Pat Cummins", role: "All-Rounder", matches: 62, runs: 410, wickets: 70, base: 2.0 },
+            { name: "Axar Patel", role: "All-Rounder", matches: 150, runs: 1650, wickets: 120, base: 1.8 }
         ];
 
-        // Dynamically pad out to 100+ players using procedural templates for realistic depth
-        for (let i = 21; i <= 100; i++) {
-            let roles = ["Batter", "Fast Bowler", "Spinner", "All-Rounder", "Wicketkeeper"];
-            let role = roles[i % roles.length];
-            auctionPool.push({
-                name: `IPL Squad Player #${i}`,
-                role: role,
-                matches: 15 + (i * 3) % 40,
-                runs: role !== 'Fast Bowler' ? 200 + (i * 25) % 1200 : 30 + i,
-                wickets: role === 'Fast Bowler' || role === 'Spinner' ? 15 + (i * 4) % 50 : 2,
-                base: 0.5 + (i % 3) * 0.5
-            });
-        }
-
-        let aucIdx = 0;
-        let currentBid = 2.0;
-        let bidLeader = "Unsold";
+        let aucIdx = 0, currentBid = 2.0, bidLeader = "Unsold";
+        const iplTeamsList = ["CSK", "RCB", "MI", "KKR", "SRH", "DC", "RR", "LSG", "GT", "PBKS"];
 
         function loadAuctionPlayer() {
             if (aucIdx >= auctionPool.length) {
                 document.getElementById('auc-player-name').innerText = "IPL Mega Auction Concluded!";
-                document.getElementById('auc-card-details').innerText = "All players have been processed. Check your Match Simulator tab.";
+                document.getElementById('auc-card-details').innerText = "All 25 players have been successfully processed.";
                 document.getElementById('auc-controls').style.display = 'none';
                 return;
             }
@@ -250,8 +233,7 @@
             document.getElementById('auc-player-name').innerText = p.name;
             document.getElementById('auc-card-details').innerHTML = `
                 <strong>Role:</strong> ${p.role}<br>
-                <strong>Career IPL Matches:</strong> ${p.matches}<br>
-                <strong>Career Runs:</strong> ${p.runs} | <strong>Wickets:</strong> ${p.wickets}<br>
+                <strong>Matches:</strong> ${p.matches} | ${p.runs ? 'Runs: ' + p.runs : 'Wickets: ' + p.wickets}<br>
                 <strong>Base Price:</strong> $${p.base}M
             `;
             currentBid = p.base;
@@ -268,17 +250,17 @@
                 document.getElementById('auc-player-price').innerText = `$${currentBid.toFixed(1)}M`;
                 document.getElementById('auc-highest-bidder').innerText = `(${bidLeader})`;
 
-                // Aggressive AI Bidding Counter
+                // Aggressive AI counter-bidding scaling into $8M - $9M+ range
                 setTimeout(() => {
-                    if (bidLeader.includes("You") && Math.random() > 0.15 && currentBid < p.base * 4.0) {
-                        currentBid += 1.5;
-                        bidLeader = iplTeams[Math.floor(Math.random() * iplTeams.length)];
+                    if (bidLeader.includes("You") && Math.random() > 0.1 && currentBid < 9.5) {
+                        currentBid += 2.0;
+                        bidLeader = iplTeamsList[Math.floor(Math.random() * iplTeamsList.length)];
                         document.getElementById('auc-player-price').innerText = `$${currentBid.toFixed(1)}M`;
                         document.getElementById('auc-highest-bidder').innerText = `(${bidLeader} AI - Aggressive!)`;
                     }
-                }, 700);
+                }, 600);
             } else {
-                alert("Insufficient funds in your team purse!");
+                alert("Insufficient funds in your franchise purse!");
             }
         }
 
@@ -286,7 +268,7 @@
             let p = auctionPool[aucIdx];
             if (bidLeader.includes("You")) {
                 appState.purse -= currentBid;
-                appState.squad.push({ name: p.name, role: p.role, price: currentBid, runs: p.runs });
+                appState.squad.push({ name: p.name, role: p.role, price: currentBid });
                 updateAuctionUI();
                 alert(`Successfully signed ${p.name} for $${currentBid.toFixed(1)}M!`);
             } else {
@@ -314,7 +296,6 @@
             `).join('');
         }
 
-        // --- 3. TOURNAMENT MATCH & SCORECARD SIMULATOR ---
         const tourneyStagesDesc = ["Quarter-Finals", "Semi-Finals", "Grand Finals"];
 
         function simulateMatchFixture() {
@@ -328,20 +309,17 @@
                 return;
             }
 
-            let opponent = iplTeams[Math.floor(Math.random() * iplTeams.length)];
-            
-            // Generate detailed match scorecard metrics
-            let userScore = 160 + Math.floor(Math.random() * 45);
-            let userWickets = 3 + Math.floor(Math.random() * 5);
-            let aiScore = userScore + (Math.random() > 0.4 ? -6 : 8);
-            let aiWickets = 5 + Math.floor(Math.random() * 5);
-            
+            let opponent = iplTeamsList[Math.floor(Math.random() * iplTeamsList.length)];
+            let userScore = 165 + Math.floor(Math.random() * 40);
+            let userWickets = 2 + Math.floor(Math.random() * 5);
+            let aiScore = userScore + (Math.random() > 0.4 ? -8 : 10);
+            let aiWickets = 4 + Math.floor(Math.random() * 5);
             let userWon = userScore >= aiScore;
 
             let scorecardHTML = `
                 <strong>Match:</strong> Your Squad vs ${opponent}<br>
                 <strong>Stage:</strong> ${tourneyStagesDesc[appState.tourneyStage]}<br><br>
-                🏏 <strong>Your Franchise Innings:</strong> ${userScore} / ${userWickets} (20 Overs)<br>
+                🏏 <strong>Your Innings:</strong> ${userScore} / ${userWickets} (20 Overs)<br>
                 ⚾ <strong>${opponent} Innings:</strong> ${aiScore} / ${aiWickets} (20 Overs)<br><br>
                 <em>Result:</em> <strong style="color:${userWon ? 'var(--accent)' : 'var(--danger)'};">${userWon ? 'You won by ' + (userScore - aiScore) + ' runs!' : opponent + ' won by ' + (aiScore - userScore) + ' runs!'}</strong>
             `;
@@ -353,7 +331,7 @@
                 if (appState.tourneyStage === 3) {
                     appState.coins += 1000;
                     document.getElementById('header-coins').innerText = `🪙 ${appState.coins} Coins`;
-                    document.getElementById('tourney-status').innerText = "CHAMPIONS CROWNED!";
+                    document.getElementById('tourney-status').innerText = "Champion Trophy Lifted!";
                     alert("🏆 Incredible! Your Playing XI won the Grand Finals and lifted the IPL Trophy! +1,000 Coins added!");
                     document.getElementById('sim-match-btn').style.display = 'none';
                 } else {
