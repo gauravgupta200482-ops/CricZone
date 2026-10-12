@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CricZone Pro | World-Class IPL Mega Auction & Match Hub</title>
+    <title>CricZone Pro | World-Class Cricket Hub & Arcade</title>
     <style>
         :root {
             --bg: #030712; --card-bg: #0f172a; --text: #f8fafc; --text-muted: #94a3b8;
@@ -41,15 +41,16 @@
     <header>
         <div class="logo">🏏 CricZone Pro Elite</div>
         <div style="display: flex; gap: 15px; align-items: center;">
-            <span id="header-purse" style="font-weight: 700; background: rgba(16,185,129,0.15); color: var(--accent); padding: 8px 16px; border-radius: 20px;">💰 Purse: $70.0M</span>
+            <span id="header-purse" style="font-weight: 700; background: rgba(16,185,129,0.15); color: var(--accent); padding: 8px 16px; border-radius: 20px;">💰 Purse: $90.0M</span>
             <span id="header-coins" style="font-weight: 700; background: rgba(245,158,11,0.15); color: var(--warning); padding: 8px 16px; border-radius: 20px;">🪙 0 Coins</span>
         </div>
     </header>
 
     <nav>
-        <button class="active" onclick="switchTab('quiz', this)">1. Infinite Cricket Quiz</button>
-        <button onclick="switchTab('auction', this)">2. IPL Mega Auction ($70M)</button>
-        <button onclick="switchTab('tournament', this)">3. Playing XI & Scorecards</button>
+        <button class="active" onclick="switchTab('quiz', this)">1. Infinite Quiz</button>
+        <button onclick="switchTab('auction', this)">2. IPL Mega Auction ($90M)</button>
+        <button onclick="switchTab('tournament', this)">3. Playing XI & Match Sim</button>
+        <button onclick="switchTab('game', this)">4. Play Arcade Cricket Game</button>
     </nav>
 
     <div class="container">
@@ -58,7 +59,7 @@
         <div id="quiz" class="tab-section active">
             <div class="card">
                 <h2>🧠 Infinite Cricket Knowledge Quiz</h2>
-                <p style="color: var(--text-muted);">Test your global cricket IQ. Correct answers increase your streak. A single wrong answer resets your streak to 0 and shuffles new procedural questions.</p>
+                <p style="color: var(--text-muted);">Test your global cricket IQ. Correct answers increase your streak. A single wrong answer resets your streak to 0.</p>
                 <div style="background: var(--bg); border: 1px solid var(--border); padding: 24px; border-radius: 10px; margin-top: 20px;">
                     <h3>Current Streak: <span id="quiz-streak" style="color: var(--accent);">0</span> Correct Answers</h3>
                     <h3 id="quiz-q" style="margin-top: 15px; font-size: 1.2rem;">Loading question...</h3>
@@ -68,11 +69,11 @@
             </div>
         </div>
 
-        <!-- TAB 2: 10-TEAM IPL MEGA AUCTION ($70M) -->
+        <!-- TAB 2: IPL MEGA AUCTION ($90M) -->
         <div id="auction" class="tab-section">
             <div class="card">
-                <h2>⚡ IPL Mega Auction ($70M Budget | 25 Players: 10 Batsmen, 10 Bowlers, 5 All-Rounders)</h2>
-                <p style="color: var(--text-muted);">Rival AI franchises bid aggressively, pushing bids up to $8M, $9M, and beyond. Secure at least 11 players to unlock the tournament matches.</p>
+                <h2>⚡ IPL Mega Auction ($90M Budget | 25 Players: 10 Batsmen, 10 Bowlers, 5 All-Rounders)</h2>
+                <p style="color: var(--text-muted);">Rival AI franchises bid aggressively up to $8M-$9M+. Secure at least 11 players to unlock match simulations.</p>
                 
                 <div class="grid-2" style="margin-top: 20px;">
                     <div style="background: var(--bg); border: 1px solid var(--border); padding: 24px; border-radius: 10px;">
@@ -94,7 +95,7 @@
 
                     <div style="background: var(--bg); border: 1px solid var(--border); padding: 24px; border-radius: 10px;">
                         <h3 style="margin-top: 0;">Franchise Treasury</h3>
-                        <p><strong>Remaining Budget:</strong> <span id="team-purse" style="color: var(--accent);">$70.0M</span></p>
+                        <p><strong>Remaining Budget:</strong> <span id="team-purse" style="color: var(--accent);">$90.0M</span></p>
                         <p><strong>Players Signed:</strong> <span id="team-count">0</span> / 11 (Minimum required)</p>
                         <hr style="border:0; border-top:1px solid var(--border);">
                         <h4>Your Squad:</h4>
@@ -106,11 +107,11 @@
             </div>
         </div>
 
-        <!-- TAB 3: MATCH & SCORECARDS -->
+        <!-- TAB 3: MATCH SIMULATOR -->
         <div id="tournament" class="tab-section">
             <div class="card">
                 <h2>🏆 Playing XI & Match Scorecard Simulator</h2>
-                <p style="color: var(--text-muted);">Once you have signed at least 11 players in the auction, simulate knockout matches against AI IPL franchises and review full scorecards.</p>
+                <p style="color: var(--text-muted);">Simulate knockout matches against AI IPL franchises and review full scorecards.</p>
                 
                 <div class="grid-2" style="margin-top: 20px;">
                     <div>
@@ -132,11 +133,32 @@
             </div>
         </div>
 
+        <!-- TAB 4: ARCADE CRICKET GAME -->
+        <div id="game" class="tab-section">
+            <div class="card" style="text-align: center;">
+                <h2>🎮 Arcade Cricket Mini-Game</h2>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Time your shots perfectly! Click the bat button when the ball approaches to smash boundaries and score runs.</p>
+                
+                <div style="background: #1e293b; border: 2px solid var(--border); border-radius: 12px; padding: 30px; max-width: 600px; margin: 0 auto;">
+                    <h3>Score: <span id="game-score" style="color: var(--accent);">0</span> Runs &nbsp;|&nbsp; Balls Left: <span id="game-balls">10</span></h3>
+                    <div id="game-pitch" style="height: 120px; background: #0f172a; border-radius: 8px; margin: 20px 0; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border: 1px dashed var(--primary);">
+                        <span id="ball-object" style="position: absolute; left: 10px; font-size: 1.5rem; transition: 0.1s;">⚾</span>
+                        <span style="position: absolute; right: 20px; font-size: 2rem;">🏏</span>
+                    </div>
+                    <p id="game-message" style="font-weight: 600; min-height: 24px; color: var(--warning);">Press Start Game to Begin Batting!</p>
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
+                        <button id="start-arcade-btn" class="btn" onclick="startArcadeGame()">Start Game</button>
+                        <button id="hit-ball-btn" class="btn btn-success" onclick="hitArcadeShot()" style="display:none;">SWING BAT! 🏏</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
         let appState = {
-            purse: 70.0,
+            purse: 90.0,
             coins: 0,
             squad: [],
             tourneyStage: 0
@@ -185,7 +207,7 @@
             }
         }
 
-        // --- EXACT 25 PLAYERS POOL (10 Batsmen, 10 Bowlers, 5 All-rounders) ---
+        // --- 25 PLAYERS POOL ($90M Purse) ---
         const auctionPool = [
             // 10 Batsmen
             { name: "Virat Kohli", role: "Batsman", matches: 252, runs: 8004, base: 2.0 },
@@ -250,7 +272,6 @@
                 document.getElementById('auc-player-price').innerText = `$${currentBid.toFixed(1)}M`;
                 document.getElementById('auc-highest-bidder').innerText = `(${bidLeader})`;
 
-                // Aggressive AI counter-bidding scaling into $8M - $9M+ range
                 setTimeout(() => {
                     if (bidLeader.includes("You") && Math.random() > 0.1 && currentBid < 9.5) {
                         currentBid += 2.0;
@@ -342,6 +363,88 @@
                 appState.tourneyStage = 0;
                 document.getElementById('tourney-status').innerText = `Stage: ${tourneyStagesDesc[0]}`;
             }
+        }
+
+        // --- ARCADE CRICKET MINI-GAME LOGIC ---
+        let arcadeGame = {
+            score: 0,
+            ballsLeft: 10,
+            active: false,
+            ballPos: 10,
+            timer: null
+        };
+
+        function startArcadeGame() {
+            arcadeGame.score = 0;
+            arcadeGame.ballsLeft = 10;
+            arcadeGame.active = true;
+            document.getElementById('game-score').innerText = arcadeGame.score;
+            document.getElementById('game-balls').innerText = arcadeGame.ballsLeft;
+            document.getElementById('start-arcade-btn').style.display = 'none';
+            document.getElementById('hit-ball-btn').style.display = 'inline-block';
+            document.getElementById('game-message').innerText = "Bowler is running up! Get ready to swing!";
+            nextArcadeBall();
+        }
+
+        function nextArcadeBall() {
+            if (arcadeGame.ballsLeft <= 0) {
+                arcadeGame.active = false;
+                document.getElementById('hit-ball-btn').style.display = 'none';
+                document.getElementById('start-arcade-btn').style.display = 'inline-block';
+                document.getElementById('game-message').innerText = `Innings Over! Final Score: ${arcadeGame.score} Runs. Play again!`;
+                return;
+            }
+            arcadeGame.ballPos = 10;
+            let ball = document.getElementById('ball-object');
+            ball.style.left = arcadeGame.ballPos + "%";
+            document.getElementById('game-message').innerText = "Ball coming down the pitch...";
+
+            arcadeGame.timer = setInterval(() => {
+                if (!arcadeGame.active) return;
+                arcadeGame.ballPos += 4;
+                ball.style.left = arcadeGame.ballPos + "%";
+                if (arcadeGame.ballPos >= 75 && arcadeGame.ballPos <= 88) {
+                    document.getElementById('game-message').innerText = "HIT NOW! 🏏";
+                }
+                if (arcadeGame.ballPos > 95) {
+                    clearInterval(arcadeGame.timer);
+                    arcadeGame.ballsLeft--;
+                    document.getElementById('game-balls').innerText = arcadeGame.ballsLeft;
+                    document.getElementById('game-message').innerText = "MISSED! Dot ball.";
+                    setTimeout(nextArcadeBall, 800);
+                }
+            }, 80);
+        }
+
+        function hitArcadeShot() {
+            if (!arcadeGame.active) return;
+            clearInterval(arcadeGame.timer);
+            arcadeGame.ballsLeft--;
+            document.getElementById('game-balls').innerText = arcadeGame.ballsLeft;
+
+            let timing = arcadeGame.ballPos;
+            let addedRuns = 0;
+            let msg = "";
+
+            if (timing >= 78 && timing <= 85) {
+                addedRuns = 6;
+                msg = "MASSIVE! Perfect timing for a SIX! 🚀";
+            } else if (timing >= 72 && timing <= 91) {
+                addedRuns = 4;
+                msg = "Great timing! Smashed for FOUR! 🎯";
+            } else if (timing >= 65 && timing <= 96) {
+                addedRuns = 1;
+                msg = "Inside edge, quick single taken.";
+            } else {
+                addedRuns = 0;
+                msg = "Too early or too late! Swing and a miss.";
+            }
+
+            arcadeGame.score += addedRuns;
+            document.getElementById('game-score').innerText = arcadeGame.score;
+            document.getElementById('game-message').innerText = msg;
+
+            setTimeout(nextArcadeBall, 1000);
         }
 
         window.onload = () => {
