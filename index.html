@@ -3,206 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CricPulse Pro - Ultimate Cricket Hub</title>
-    <!-- Chart.js for Win Probability Graph -->
+    <title>CricZone Pro | Elite Cricket Portal & Simulator</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- PWA Manifest Link Placeholder -->
-    <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22CricPulse%20Pro%22%2C%22short_name%22%3A%22CricPulse%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%231e3a8a%22%2C%22theme_color%22%3A%22%231e3a8a%22%7D">
     <style>
         :root {
-            --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --primary: #2563eb; --accent: #10b981; --border: #e2e8f0;
+            --bg: #090d16; --card-bg: #131b2e; --text: #f1f5f9; --text-muted: #94a3b8; 
+            --primary: #3b82f6; --accent: #10b981; --border: #1e293b; --danger: #ef4444; --warning: #f59e0b;
         }
-        .dark-mode {
-            --bg: #0f172a; --card-bg: #1e293b; --text: #f8fafc; --primary: #3b82f6; --accent: #34d399; --border: #334155;
+        .light-mode {
+            --bg: #f8fafc; --card-bg: #ffffff; --text: #0f172a; --text-muted: #64748b; 
+            --primary: #2563eb; --accent: #059669; --border: #e2e8f0; --danger: #dc2626; --warning: #d97706;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--bg); color: var(--text); transition: 0.3s; }
-        header { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        nav { display: flex; gap: 10px; background: var(--card-bg); padding: 10px 20px; border-bottom: 1px solid var(--border); overflow-x: auto; }
-        nav button { background: transparent; border: none; color: var(--text); font-weight: 600; cursor: pointer; padding: 8px 12px; border-radius: 4px; white-space: nowrap; }
+        * { box-sizing: border-box; transition: background 0.2s, color 0.2s; }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 40px; }
+        
+        header { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        
+        nav { display: flex; gap: 8px; background: var(--card-bg); padding: 10px 20px; border-bottom: 1px solid var(--border); overflow-x: auto; }
+        nav button { background: transparent; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; padding: 10px 16px; border-radius: 6px; white-space: nowrap; font-size: 0.95rem; }
         nav button:hover, nav button.active { background: var(--primary); color: white; }
-        .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
-        button.action-btn { background: var(--accent); color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        button.action-btn:hover { opacity: 0.9; }
-        .player-card { border: 2px solid gold; border-radius: 8px; padding: 15px; text-align: center; background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #111; }
-        .flex-row { display: flex; justify-content: space-between; align-items: center; }
+
+        .container { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
+        .tab-section { display: none; }
+        .tab-section.active { display: block; }
+
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        
+        .badge { background: rgba(239, 68, 68, 0.15); color: var(--danger); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; display: inline-flex; align-items: center; gap: 5px; }
+        .badge::before { content: ''; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; animation: pulse 1.5px infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.95rem; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--border); }
+        th { color: var(--text-muted); font-weight: 600; }
+
+        .btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.95rem; }
+        .btn:hover { opacity: 0.9; }
+        .btn-success { background: var(--accent); }
+        .btn-danger { background: var(--danger); }
+
+        .auction-arena { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .auction-arena { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🏏 CricPulse Pro</h1>
+        <div class="logo">🏏 CricZone Pro</div>
         <div style="display: flex; gap: 15px; align-items: center;">
-            <span id="user-coins" style="font-weight: bold; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 20px;">🪙 500 Coins</span>
-            <button onclick="toggleDarkMode()" style="background:transparent; border:1px solid white; color:white; padding:5px 10px; border-radius:4px; cursor:pointer;">🌓 Dark Mode</button>
+            <span id="user-wallet" style="font-weight: 700; background: rgba(16,185,129,0.1); color: var(--accent); padding: 6px 12px; border-radius: 20px;">🪙 1,000 Coins</span>
+            <button class="btn" onclick="toggleTheme()" style="padding: 6px 12px; font-size: 0.85rem;">🌓 Theme</button>
         </div>
     </header>
 
     <nav>
-        <button class="active" onclick="switchTab('live', this)">Live & Scoreboards</button>
-        <button onclick="switchTab('ai', this)">AI Predictor & Graph</button>
-        <button onclick="switchTab('auction', this)">IPL Auction Sim</button>
-        <button onclick="switchTab('cards', this)">Card Vault & Daily</button>
-        <button onclick="switchTab('game', this)">Mini Game</button>
+        <button class="active" onclick="switchTab('live', this)">Live Scores & Scorecards</button>
+        <button onclick="switchTab('auction', this)">IPL Mega Auction Sim</button>
+        <button onclick="switchTab('trivia', this)">Cricket Knowledge Quiz</button>
+        <button onclick="switchTab('game', this)">Arcade Mini-Game</button>
+        <button onclick="switchTab('vault', this)">Card Vault & Rewards</button>
     </nav>
 
     <div class="container">
 
-        <!-- TAB 1: LIVE & SCOREBOARDS -->
-        <div id="live" class="tab-content active">
-            <h2>🔴 Live International Matches</h2>
+        <!-- TAB 1: LIVE SCORES & SCORECARDS -->
+        <div id="live" class="tab-section active">
             <div class="card">
-                <div class="flex-row">
-                    <h3>India vs Australia (1st Test)</h3>
-                    <span style="color: red; font-weight: bold;">LIVE</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div>
+                        <span class="badge">Live International</span>
+                        <h2 style="margin: 8px 0 0 0;">India vs Australia — 3rd Test, Day 2</h2>
+                    </div>
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Venue: Melbourne Cricket Ground</span>
                 </div>
-                <p><strong>Score:</strong> IND 342/6 & 112/2 vs AUS 310/10</p>
-                <p><em>Day 4 - Session 3: India lead by 144 runs</em></p>
-                <hr style="border:0; border-top:1px solid var(--border);">
-                <h4>Recent Past Scorecards</h4>
-                <ul>
-                    <li>England vs New Zealand (3rd ODI) – ENG won by 45 runs</li>
-                    <li>South Africa vs Pakistan (2nd T20I) – PAK won by 6 wickets</li>
-                </ul>
+                <div style="background: rgba(59,130,246,0.05); border: 1px solid var(--border); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="margin: 0 0 5px 0;">IND: 384/6 (112.4 Ov) &nbsp;|&nbsp; AUS: 245/10</h3>
+                    <p style="margin: 0; color: var(--text-muted);">India lead by 139 runs. Current Run Rate: 3.41</p>
+                </div>
+                
+                <h3>Live Batting Scorecard</h3>
+                <table>
+                    <thead>
+                        <tr><th>Batter</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Virat Kohli*</td><td>114</td><td>182</td><td>12</td><td>2</td><td>62.63</td></tr>
+                        <tr><td>Ravindra Jadeja*</td><td>45</td><td>78</td><td>5</td><td>0</td><td>57.69</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 style="margin-top: 25px;">Live Bowling Figures</h3>
+                <table>
+                    <thead>
+                        <tr><th>Bowler</th><th>O</th><th>M</th><th>R</th><th>W</th><th>ECON</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Pat Cummins</td><td>22.4</td><td>4</td><td>78</td><td>2</td><td>3.44</td></tr>
+                        <tr><td>Mitchell Starc</td><td>24.0</td><td>3</td><td>92</td><td>3</td><td>3.83</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- TAB 2: AI PREDICTOR & GRAPH -->
-        <div id="ai" class="tab-content">
-            <h2>🤖 AI Win Probability & Live Graph</h2>
+        <!-- TAB 2: IPL MEGA AUCTION SIMULATOR -->
+        <div id="auction" class="tab-section">
             <div class="card">
-                <p>AI Real-time calculation based on pitch state, run rate, and wickets remaining:</p>
-                <h3 style="color: var(--accent);">India Winning Probability: <span id="prob-val">78%</span></h3>
-                <canvas id="winChart" width="400" height="150"></canvas>
-            </div>
-        </div>
+                <h2>⚡ IPL 2026 Mega Auction Simulator</h2>
+                <p style="color: var(--text-muted);">You manage **Royal Challengers Bengaluru (RCB)** with a strict **$100.0M** purse. Compete against 5 aggressive AI franchises (CSK, MI, KKR, DC, SRH) in real-time bidding wars.</p>
+                
+                <div class="auction-arena" style="margin-top: 20px;">
+                    <div style="background: var(--bg); border: 1px solid var(--border); padding: 20px; border-radius: 8px;">
+                        <span id="auction-set" style="color: var(--warning); font-weight: 700; font-size: 0.85rem; text-transform: uppercase;">Marquee Set 1</span>
+                        <h2 id="auc-player-name" style="margin: 8px 0;">Jasprit Bumrah</h2>
+                        <p id="auc-player-role" style="color: var(--text-muted); margin: 0 0 15px 0;">Role: Elite Fast Bowler (Base Price: $2.0M)</p>
+                        
+                        <div style="font-size: 1.25rem; font-weight: 700; margin-bottom: 20px;">
+                            Current Bid: <span id="auc-current-bid" style="color: var(--accent);">$2.0M</span> 
+                            <span id="auc-highest-bidder" style="font-size: 0.9rem; color: var(--text-muted); margin-left: 10px;">(Unsold)</span>
+                        </div>
 
-        <!-- TAB 3: IPL AUCTION SIMULATOR -->
-        <div id="auction" class="tab-content">
-            <h2>🔨 IPL Auction Simulator</h2>
-            <div class="card">
-                <p>Purse Remaining: <strong id="purse">$100.0M</strong></p>
-                <div id="auction-box">
-                    <h3 id="player-on-block">Star Player: Jasprit Bumrah (Bowler)</h3>
-                    <p>Base Price: $2.0M</p>
-                    <button class="action-btn" onclick="bidPlayer(3.0)">Bid $3.0M</button>
-                    <button class="action-btn" style="background:#ef4444;" onclick="passPlayer()">Pass</button>
+                        <div id="auction-controls" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="btn btn-success" onclick="placeUserBid(1.0)">Bid +$1.0M</button>
+                            <button class="btn btn-success" onclick="placeUserBid(2.0)" style="background: #047857;">Bid +$2.0M</button>
+                            <button class="btn btn-danger" onclick="passAuctionPlayer()">Drop / Pass</button>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg); border: 1px solid var(--border); padding: 20px; border-radius: 8px;">
+                        <h3 style="margin-top: 0;">Franchise Purse Status</h3>
+                        <p><strong>RCB Purse:</strong> <span id="rcb-purse" style="color: var(--accent);">$100.0M</span></p>
+                        <p><strong>Squad Count:</strong> <span id="rcb-count">0</span> / 25 players</p>
+                        <hr style="border:0; border-top:1px solid var(--border);">
+                        <h4>Your Acquired Squad:</h4>
+                        <ul id="rcb-squad-list" style="padding-left: 18px; margin: 0; color: var(--text-muted);">
+                            <li>No players signed yet.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 4: CARD COLLECTION & DAILY REWARDS -->
-        <div id="cards" class="tab-content">
-            <h2>🎴 Cricket Card Vault & Daily Bonus</h2>
+        <!-- TAB 3: CRICKET KNOWLEDGE QUIZ -->
+        <div id="trivia" class="tab-section">
             <div class="card">
-                <button class="action-btn" onclick="claimDaily()">🎁 Claim Daily 100 Coins</button>
-                <button class="action-btn" onclick="openPack()" style="background:#8b5cf6; margin-left: 10px;">📦 Open Card Pack (150 Coins)</button>
-                <h3>Your Collected Cards:</h3>
-                <div id="card-vault" class="grid" style="margin-top: 15px;">
-                    <p>No cards collected yet. Open a pack to start your collection!</p>
+                <h2>🧠 Ultimate Cricket Knowledge Quiz</h2>
+                <p style="color: var(--text-muted);">Test your IQ across international rules, historical stats, and World Cup records. Earn 50 coins per correct answer!</p>
+                <div id="quiz-box" style="margin-top: 20px;">
+                    <h3 id="quiz-question">Loading question...</h3>
+                    <div id="quiz-options" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;"></div>
                 </div>
+                <p id="quiz-feedback" style="margin-top: 15px; font-weight: 700;"></p>
             </div>
         </div>
 
-        <!-- TAB 5: MINI GAME -->
-        <div id="game" class="tab-content">
-            <h2>🎮 Classic Browser Cricket Game</h2>
+        <!-- TAB 4: ARCADE MINI-GAME -->
+        <div id="game" class="tab-section">
             <div class="card" style="text-align: center;">
-                <iframe src="https://www.google.com/logos/2017/cricket17/cricket17.html" width="100%" height="450px" style="border:none; border-radius: 6px;"></iframe>
+                <h2>🎮 World-Class Arcade Cricket Game</h2>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Timing is everything! Smash boundaries straight from your browser.</p>
+                <div style="background: #000; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);">
+                    <iframe src="https://www.google.com/logos/2017/cricket17/cricket17.html" width="100%" height="500px" style="border:none;"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: VAULT & REWARDS -->
+        <div id="vault" class="tab-section">
+            <div class="card">
+                <h2>🎴 Player Card Vault & Daily Rewards</h2>
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button class="btn" onclick="claimDailyBonus()">🎁 Claim Daily 200 Coins</button>
+                    <button class="btn btn-success" onclick="openCardPack()">📦 Open Epic Card Pack (250 Coins)</button>
+                </div>
+                <h3>Your Unlocked Player Cards:</h3>
+                <div id="vault-grid" class="grid-2" style="margin-top: 15px;">
+                    <p style="color: var(--text-muted);">Your vault is empty. Open packs using coins earned from quiz & auction!</p>
+                </div>
             </div>
         </div>
 
     </div>
 
     <script>
-        // Global State
-        let state = { coins: 500, purse: 100.0, cards: [] };
+        // Global App State
+        let appState = {
+            coins: 1000,
+            rcbPurse: 100.0,
+            rcbSquad: [],
+            cards: []
+        };
 
-        // Tab Navigation Switcher
         function switchTab(tabId, btn) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
         }
 
-        // Dark Mode Toggle
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
         }
 
-        // Chart.js Win Probability Graph Initialization
-        const ctx = document.getElementById('winChart').getContext('2d');
-        const winChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Over 10', '20', '30', '40', '50'],
-                datasets: [{
-                    label: 'India Win %',
-                    data: [30, 45, 60, 70, 78],
-                    borderColor: '#10b981',
-                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                    fill: true,
-                    tension: 0.3
-                }]
-            },
-            options: { responsive: true, scales: { y: { beginAtZero: true, max: 100 } } }
-        });
+        // --- REALISTIC IPL AUCTION LOGIC ---
+        const auctionPool = [
+            { name: "Jasprit Bumrah", role: "Elite Fast Bowler", base: 2.0 },
+            { name: "Travis Head", role: "Explosive Opener", base: 1.5 },
+            { name: "Rashid Khan", role: "World-Class Spinner", base: 2.0 },
+            { name: "Heinrich Klaasen", role: "Power Wicketkeeper", base: 1.5 },
+            { name: "Pat Cummins", role: "Captain & All-Rounder", base: 2.0 }
+        ];
+        let aucIndex = 0;
+        let currentBidVal = 2.0;
+        let currentLeader = "Unsold";
 
-        // IPL Auction Logic
-        let currentBid = 2.0;
-        const playersList = ["Virat Kohli (Batsman)", "MS Dhoni (Wicketkeeper)", "Rashid Khan (All-Rounder)", "Pat Cummins (Captain)"];
-        let playerIndex = 0;
+        function loadAuctionPlayer() {
+            if (aucIndex >= auctionPool.length) {
+                document.getElementById('auc-player-name').innerText = "Auction Completed!";
+                document.getElementById('auc-player-role').innerText = "All Marquee players have been sold.";
+                document.getElementById('auction-controls').style.display = 'none';
+                return;
+            }
+            let p = auctionPool[aucIndex];
+            document.getElementById('auc-player-name').innerText = p.name;
+            document.getElementById('auc-player-role').innerText = `Role: ${p.role} (Base Price: $${p.base}M)`;
+            currentBidVal = p.base;
+            currentLeader = "Unsold";
+            document.getElementById('auc-current-bid.innerText').innerText = `$${currentBidVal}M`;
+            document.getElementById('auc-highest-bidder').innerText = "(Unsold)";
+        }
 
-        function bidPlayer(amount) {
-            if (state.purse >= amount) {
-                state.purse -= amount;
-                document.getElementById('purse').innerText = `$${state.purse.toFixed(1)}M`;
-                alert("Successfully signed player to your squad!");
-                passPlayer();
+        function placeUserBid(increment) {
+            let p = auctionPool[aucIndex];
+            if (appState.rcbPurse >= currentBidVal + increment) {
+                currentBidVal += increment;
+                currentLeader = "RCB (You)";
+                document.getElementById('auc-current-bid').innerText = `$${currentBidVal.toFixed(1)}M`;
+                document.getElementById('auc-highest-bidder').innerText = `(${currentLeader})`;
+                
+                // AI counter-bid simulation
+                setTimeout(() => {
+                    if (currentLeader === "RCB (You)" && Math.random() > 0.3 && currentBidVal < p.base * 3) {
+                        currentBidVal += 0.5;
+                        const aiFranchises = ["CSK", "MI", "KKR", "DC", "SRH"];
+                        currentLeader = aiFranchises[Math.floor(Math.random() * aiFranchises.length)];
+                        document.getElementById('auc-current-bid').innerText = `$${currentBidVal.toFixed(1)}M`;
+                        document.getElementById('auc-highest-bidder').innerText = `(${currentLeader} AI)`;
+                    }
+                }, 1200);
             } else {
-                alert("Not enough purse funds left!");
+                alert("Insufficient funds in your franchise purse!");
             }
         }
 
-        function passPlayer() {
-            playerIndex = (playerIndex + 1) % playersList.length;
-            document.getElementById('player-on-block').innerText = `Star Player: ${playersList[playerIndex]}`;
+        function passAuctionPlayer() {
+            let p = auctionPool[aucIndex];
+            if (currentLeader === "RCB (You)") {
+                appState.rcbPurse -= currentBidVal;
+                appState.rcbSquad.push(`${p.name} ($${currentBidVal.toFixed(1)}M)`);
+                document.getElementById('rcb-purse').innerText = `$${appState.rcbPurse.toFixed(1)}M`;
+                document.getElementById('rcb-count').innerText = appState.rcbSquad.length;
+                document.getElementById('rcb-squad-list').innerHTML = appState.rcbSquad.map(s => `<li>${s}</li>`).join('');
+                alert(`Successfully acquired ${p.name} for $${currentBidVal.toFixed(1)}M!`);
+            } else {
+                alert(`${p.name} sold to ${currentLeader}!`);
+            }
+            aucIndex++;
+            loadAuctionPlayer();
         }
 
-        // Daily Rewards & Card Pack Logic
-        function claimDaily() {
-            state.coins += 100;
-            updateUI();
-            alert("Claimed 100 daily bonus coins!");
+        // --- CRICKET QUIZ LOGIC ---
+        const quizQuestions = [
+            { q: "Who holds the record for the highest individual score in ODI cricket (264)?", options: ["Rohit Sharma", "Virat Kohli", "Martin Guptill", "Chris Gayle"], answer: 0 },
+            { q: "Which country won the inaugural ICC T20 World Cup in 2007?", options: ["Pakistan", "Australia", "India", "Sri Lanka"], answer: 2 },
+            { q: "What is the length of a cricket pitch between the two wickets?", options: ["20 yards", "22 yards", "24 yards", "18 yards"], answer: 1 }
+        ];
+        let qIdx = 0;
+
+        function loadQuiz() {
+            if (qIdx >= quizQuestions.length) qIdx = 0;
+            let qData = quizQuestions[qIdx];
+            document.getElementById('quiz-question').innerText = qData.q;
+            let optHTML = "";
+            qData.options.forEach((opt, idx) => {
+                optHTML += `<button class="btn" style="background:var(--card-bg); border:1px solid var(--border); color:var(--text); text-align:left;" onclick="checkQuizAnswer(${idx}, ${qData.answer})">${opt}</button>`;
+            });
+            document.getElementById('quiz-options').innerHTML = optHTML;
+            document.getElementById('quiz-feedback').innerText = "";
         }
 
-        function openPack() {
-            if (state.coins >= 150) {
-                state.coins -= 150;
-                const pool = ["Virat Kohli - [Legendary]", "Jasprit Bumrah - [Epic]", "Rohit Sharma - [Epic]", "Rachin Ravindra - [Rare]"];
-                const wonCard = pool[Math.floor(Math.random() * pool.length)];
-                state.cards.push(wonCard);
-                updateUI();
+        function checkQuizAnswer(selected, correct) {
+            if (selected === correct) {
+                document.getElementById('quiz-feedback').style.color = "var(--accent)";
+                document.getElementById('quiz-feedback').innerText = "Correct! +50 Coins added to your wallet.";
+                appState.coins += 50;
+                updateWalletUI();
+                setTimeout(() => { qIdx++; loadQuiz(); }, 1500);
+            } else {
+                document.getElementById('quiz-feedback').style.color = "var(--danger)";
+                document.getElementById('quiz-feedback').innerText = "Incorrect! Try again.";
+            }
+        }
+
+        function updateWalletUI() {
+            document.getElementById('user-wallet').innerText = `🪙 ${appState.coins} Coins`;
+        }
+
+        // --- VAULT & REWARDS ---
+        function claimDailyBonus() {
+            appState.coins += 200;
+            updateWalletUI();
+            alert("Claimed 200 daily bonus coins!");
+        }
+
+        function openCardPack() {
+            if (appState.coins >= 250) {
+                appState.coins -= 250;
+                updateWalletUI();
+                const tierList = ["Virat Kohli [Legendary - 99 OVR]", "Jasprit Bumrah [Epic - 95 OVR]", "MS Dhoni [Legendary - 98 OVR]", "Rashid Khan [Epic - 93 OVR]"];
+                const wonCard = tierList[Math.floor(Math.random() * tierList.length)];
+                appState.cards.push(wonCard);
                 renderVault();
-                alert(`You unpacked: ${wonCard}!`);
+                alert(`Unboxed: ${wonCard}!`);
             } else {
-                alert("You need 150 coins to open a card pack!");
+                alert("You need 250 coins to open a card pack! Play the quiz or win auctions.");
             }
-        }
-
-        function updateUI() {
-            document.getElementById('user-coins').innerText = `🪙 ${state.coins} Coins`;
         }
 
         function renderVault() {
-            const vault = document.getElementById('card-vault');
-            if (state.cards.length === 0) return;
-            vault.innerHTML = state.cards.map(c => `<div class="player-card"><h4>🏏 Player Card</h4><p><strong>${c}</strong></p></div>`).join('');
+            const vault = document.getElementById('vault-grid');
+            if (appState.cards.length === 0) return;
+            vault.innerHTML = appState.cards.map(c => `
+                <div style="background:linear-gradient(135deg, #1e3a8a, #0f172a); border:2px solid var(--primary); border-radius:10px; padding:15px; color:white;">
+                    <h4>🏏 Player Card</h4>
+                    <p style="font-weight:700; margin:5px 0 0 0;">${c}</p>
+                </div>
+            `).join('');
         }
+
+        // Initialize App on Load
+        window.onload = () => {
+            loadAuctionPlayer();
+            loadQuiz();
+        };
     </script>
 </body>
 </html>
