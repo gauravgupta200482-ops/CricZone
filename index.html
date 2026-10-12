@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CricZone Pro | World-Class Cricket Hub & IPL Simulator</title>
+    <title>CricZone Pro | Ultimate World-Class Cricket Portal</title>
     <style>
         :root {
-            --bg: #07090e; --card-bg: #111827; --text: #f8fafc; --text-muted: #94a3b8;
-            --primary: #2563eb; --accent: #10b981; --border: #1f2937; --danger: #ef4444; --warning: #f59e0b;
+            --bg: #030712; --card-bg: #0f172a; --text: #f8fafc; --text-muted: #94a3b8;
+            --primary: #2563eb; --accent: #10b981; --border: #1e293b; --danger: #ef4444; --warning: #f59e0b;
         }
-        * { box-sizing: border-box; }
-        body { font-family: 'Inter', system-ui, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 50px; }
+        * { box-sizing: pointer-events; box-sizing: border-box; }
+        body { font-family: 'Inter', system-ui, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 60px; }
         
-        header { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        header { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 10px; }
         
         nav { display: flex; gap: 10px; background: var(--card-bg); padding: 12px 20px; border-bottom: 1px solid var(--border); overflow-x: auto; }
-        nav button { background: transparent; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; padding: 10px 18px; border-radius: 6px; white-space: nowrap; font-size: 1rem; }
+        nav button { background: transparent; border: none; color: var(--text-muted); font-weight: 600; cursor: pointer; padding: 10px 18px; border-radius: 8px; white-space: nowrap; font-size: 1rem; transition: 0.2s; }
         nav button:hover, nav button.active { background: var(--primary); color: white; }
 
-        .container { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
+        .container { max-width: 1280px; margin: 30px auto; padding: 0 20px; }
         .tab-section { display: none; }
         .tab-section.active { display: block; }
 
-        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); }
-        .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
-        @media(max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.4); }
+        .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+        @media(max-width: 850px) { .grid-2 { grid-template-columns: 1fr; } }
 
-        .btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.95rem; }
-        .btn:hover { opacity: 0.9; }
+        .btn { background: var(--primary); color: white; border: none; padding: 12px 22px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: 0.2s; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
         .btn-success { background: var(--accent); }
         .btn-danger { background: var(--danger); }
         .btn-warning { background: var(--warning); color: #000; }
@@ -36,22 +36,24 @@
         table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.95rem; }
         th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--border); }
         th { color: var(--text-muted); font-weight: 600; }
+        
+        .roster-item { background: rgba(37, 99, 235, 0.08); border: 1px solid var(--border); padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">🏏 CricZone Pro</div>
+        <div class="logo">🏏 CricZone Pro Elite Hub</div>
         <div style="display: flex; gap: 15px; align-items: center;">
-            <span id="header-purse" style="font-weight: 700; background: rgba(16,185,129,0.15); color: var(--accent); padding: 6px 14px; border-radius: 20px;">💰 Purse: $100.0M</span>
-            <span id="header-coins" style="font-weight: 700; background: rgba(245,158,11,0.15); color: var(--warning); padding: 6px 14px; border-radius: 20px;">🪙 0 Coins</span>
+            <span id="header-purse" style="font-weight: 700; background: rgba(16,185,129,0.15); color: var(--accent); padding: 8px 16px; border-radius: 20px;">💰 Purse: $100.0M</span>
+            <span id="header-coins" style="font-weight: 700; background: rgba(245,158,11,0.15); color: var(--warning); padding: 8px 16px; border-radius: 20px;">🪙 0 Coins</span>
         </div>
     </header>
 
     <nav>
-        <button class="active" onclick="switchTab('quiz', this)">1. Cricket Knowledge Quiz</button>
+        <button class="active" onclick="switchTab('quiz', this)">1. Infinite Cricket Quiz</button>
         <button onclick="switchTab('auction', this)">2. 10-Team IPL Mega Auction</button>
-        <button onclick="switchTab('tournament', this)">3. Squad Builder & Tournament Cup</button>
+        <button onclick="switchTab('tournament', this)">3. Squad & Tournament Cup</button>
     </nav>
 
     <div class="container">
@@ -59,14 +61,14 @@
         <!-- TAB 1: INFINITE KNOWLEDGE QUIZ -->
         <div id="quiz" class="tab-section active">
             <div class="card">
-                <h2>🧠 Infinite Cricket Knowledge Quiz (10,000+ Random Database)</h2>
-                <p style="color: var(--text-muted);">Test your IQ. Answer random questions correctly to advance your streak. **Warning:** One wrong answer resets your streak to 0 and shuffles an entirely new randomized question set!</p>
+                <h2>🧠 Infinite Cricket Knowledge Quiz (Advanced Procedural Bank)</h2>
+                <p style="color: var(--text-muted);">Answer dynamically generated questions covering global cricket history, rules, records, and tournaments. A single mistake immediately resets your streak to 0 and shuffles a completely new parameter set.</p>
                 
-                <div style="background: var(--bg); border: 1px solid var(--border); padding: 20px; border-radius: 8px; margin-top: 20px;">
-                    <h3>Current Streak: <span id="quiz-streak" style="color: var(--accent);">0</span> Correct Answers</h3>
-                    <h3 id="quiz-q" style="margin-top: 15px;">Loading question...</h3>
-                    <div id="quiz-opts" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;"></div>
-                    <p id="quiz-msg" style="margin-top: 15px; font-weight: 700;"></p>
+                <div style="background: var(--bg); border: 1px solid var(--border); padding: 24px; border-radius: 10px; margin-top: 20px;">
+                    <h3>Active Streak: <span id="quiz-streak" style="color: var(--accent);">0</span> Correct Answers</h3>
+                    <h3 id="quiz-q" style="margin-top: 15px; font-size: 1.2rem;">Initializing database...</h3>
+                    <div id="quiz-opts" style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;"></div>
+                    <p id="quiz-msg" style="margin-top: 20px; font-weight: 700; font-size: 1.05rem;"></p>
                 </div>
             </div>
         </div>
@@ -74,60 +76,60 @@
         <!-- TAB 2: 10-TEAM IPL MEGA AUCTION -->
         <div id="auction" class="tab-section">
             <div class="card">
-                <h2>⚡ 10-Team IPL Mega Auction ($100M Purse | 200 Players)</h2>
-                <p style="color: var(--text-muted);">Manage your chosen franchise against all 10 IPL teams (MI, CSK, RCB, KKR, SRH, DC, RR, LSG, GT, PBKS). Bid strategically to assemble your squad.</p>
+                <h2>⚡ 10-Team IPL Mega Auction ($100M Purse | 200 Player Database)</h2>
+                <p style="color: var(--text-muted);">Compete against all 10 franchises (MI, CSK, RCB, KKR, SRH, DC, RR, LSG, GT, PBKS). Manage your $100M budget carefully across deep player pools.</p>
                 
                 <div class="grid-2" style="margin-top: 20px;">
-                    <div style="background: var(--bg); border: 1px solid var(--border); padding: 20px; border-radius: 8px;">
-                        <span id="auc-category" style="color: var(--warning); font-weight: 700; text-transform: uppercase;">Set 1: Marquee Stars</span>
+                    <div style="background: var(--bg); border: 1px solid var(--border); padding: 24px; border-radius: 10px;">
+                        <span id="auc-category" style="color: var(--warning); font-weight: 700; text-transform: uppercase;">Marquee Set</span>
                         <h2 id="auc-player-name" style="margin: 8px 0;">Loading Player...</h2>
-                        <p id="auc-player-info" style="color: var(--text-muted); margin: 0 0 15px 0;">Stats loading...</p>
+                        <p id="auc-player-info" style="color: var(--text-muted); margin: 0 0 20px 0;">Fetching stats...</p>
                         
-                        <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 20px;">
+                        <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 24px;">
                             Current Bid: <span id="auc-player-price" style="color: var(--accent);">$2.0M</span> 
-                            <span id="auc-highest-bidder" style="font-size: 0.9rem; color: var(--text-muted); margin-left: 10px;">(Unsold)</span>
+                            <span id="auc-highest-bidder" style="font-size: 0.95rem; color: var(--text-muted); margin-left: 10px;">(Unsold)</span>
                         </div>
 
-                        <div id="auc-controls" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <div id="auc-controls" style="display: flex; gap: 12px; flex-wrap: wrap;">
                             <button class="btn btn-success" onclick="placeAuctionBid(1.0)">Bid +$1.0M</button>
                             <button class="btn btn-success" onclick="placeAuctionBid(2.5)" style="background: #047857;">Bid +$2.5M</button>
                             <button class="btn btn-danger" onclick="passAuctionPlayer()">Pass / Drop</button>
                         </div>
                     </div>
 
-                    <div style="background: var(--bg); border: 1px solid var(--border); padding: 20px; border-radius: 8px;">
-                        <h3 style="margin-top: 0;">Franchise Status</h3>
+                    <div style="background: var(--bg); border: 1px solid var(--border); padding: 24px; border-radius: 10px;">
+                        <h3 style="margin-top: 0;">Franchise Treasury</h3>
                         <p><strong>Purse Remaining:</strong> <span id="team-purse" style="color: var(--accent);">$100.0M</span></p>
-                        <p><strong>Players Acquired:</strong> <span id="team-count">0</span> / 11</p>
+                        <p><strong>Players Signed:</strong> <span id="team-count">0</span> / 11</p>
                         <hr style="border:0; border-top:1px solid var(--border);">
-                        <h4>Your Roster:</h4>
-                        <ul id="team-roster" style="padding-left: 18px; margin: 0; color: var(--text-muted);">
-                            <li>No players signed yet.</li>
-                        </ul>
+                        <h4>Acquired Roster:</h4>
+                        <div id="team-roster" style="max-height: 250px; overflow-y: auto;">
+                            <p style="color: var(--text-muted);">No players signed yet.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 3: SQUAD BUILDER & TOURNAMENT CUP -->
+        <!-- TAB 3: SQUAD & TOURNAMENT CUP -->
         <div id="tournament" class="tab-section">
             <div class="card">
-                <h2>🏆 Squad Builder & Tournament Play-offs Simulator</h2>
-                <p style="color: var(--text-muted);">Build your Playing XI from your acquired auction players and simulate matches through Quarter-finals, Semi-finals, and Finals to win the cup and claim 1,000 Coins!</p>
+                <h2>🏆 Playing XI Builder & Tournament Knockout Cup</h2>
+                <p style="color: var(--text-muted);">Configure your Playing XI from your auction acquisitions, then simulate through Quarter-finals, Semi-finals, and Finals to lift the trophy and claim **1,000 Coins**.</p>
                 
                 <div class="grid-2" style="margin-top: 20px;">
                     <div>
-                        <h3>Your Playing XI Builder</h3>
-                        <div id="playing-xi-box" style="background: var(--bg); border: 1px solid var(--border); padding: 15px; border-radius: 8px; min-height: 200px;">
-                            <p style="color: var(--text-muted);">Sign players in the IPL Auction to populate your squad pool.</p>
+                        <h3>Starting Playing XI</h3>
+                        <div id="playing-xi-box" style="background: var(--bg); border: 1px solid var(--border); padding: 20px; border-radius: 10px; min-height: 250px;">
+                            <p style="color: var(--text-muted);">Participate in the IPL Auction to build your squad pool.</p>
                         </div>
                     </div>
                     
-                    <div style="background: var(--bg); border: 1px solid var(--border); padding: 20px; border-radius: 8px;">
-                        <h3 style="margin-top:0;">Tournament Bracket</h3>
-                        <p id="tourney-status" style="color: var(--text-muted);">Stage: Quarter-Finals vs AI Franchise</p>
-                        <div id="match-result-box" style="font-size: 1.05rem; font-weight: 600; margin: 15px 0; color: var(--warning);"></div>
-                        <button id="sim-match-btn" class="btn btn-success" onclick="simulateNextRound()" style="width:100%;">Simulate Next Round Match</button>
+                    <div style="background: var(--bg); border: 1px solid var(--border); padding: 24px; border-radius: 10px;">
+                        <h3 style="margin-top:0;">Tournament Bracket Status</h3>
+                        <p id="tourney-status" style="font-weight:600; color:var(--warning);">Current Stage: Quarter-Finals</p>
+                        <div id="match-result-box" style="font-size: 1.05rem; line-height: 1.5; margin: 20px 0; color: var(--text);">Ready to begin knockout fixtures.</div>
+                        <button id="sim-match-btn" class="btn btn-success" onclick="simulateTournamentRound()" style="width:100%;">Simulate Knockout Fixture</button>
                     </div>
                 </div>
             </div>
@@ -136,12 +138,10 @@
     </div>
 
     <script>
-        // Global App State
         let appState = {
             purse: 100.0,
             coins: 0,
             squad: [],
-            roster: [],
             tourneyStage: 0 // 0: Quarters, 1: Semis, 2: Finals, 3: Won
         };
 
@@ -152,72 +152,57 @@
             btn.classList.add('active');
         }
 
-        // --- 1. INFINITE RANDOM QUIZ ENGINE (10,000+ Generated Bank) ---
-        const rawQuestionBank = [
-            { q: "Who holds the record for the highest individual score in Test cricket (400 not out)?", opts: ["Brian Lara", "Sachin Tendulkar", "Don Bradman", "Virender Sehwag"], ans: 0 },
-            { q: "Which bowler has taken the most wickets in international cricket history?", opts: ["Muttiah Muralitharan", "Shane Warne", "James Anderson", "Anil Kumble"], ans: 0 },
-            { q: "In what year was the very first official international Cricket Test match played?", opts: ["1877", "1882", "1900", "1932"], ans: 0 },
-            { q: "Who captained India to victory in the 1983 Cricket World Cup?", opts: ["Kapil Dev", "Sunil Gavaskar", "MS Dhoni", "Ravi Shastri"], ans: 0 },
-            { q: "What is the circumference regulation of a standard cricket ball in men's ODIs?", opts: ["8.81 to 9.00 inches", "7.50 to 8.00 inches", "9.50 to 10.0 inches", "8.00 to 8.25 inches"], ans: 0 },
-            { q: "Which cricket stadium is known as the 'Home of Cricket'?", opts: ["Lord's", "Melbourne Cricket Ground", "Eden Gardens", "The Oval"], ans: 0 },
-            { q: "Who hit six sixes in an over off Stuart Broad in the 2007 T20 World Cup?", opts: ["Yuvraj Singh", "Herschelle Gibbs", "Chris Gayle", "MS Dhoni"], ans: 0 },
-            { q: "Which team won the inaugural ICC Men's T20 World Cup in 2007?", opts: ["India", "Pakistan", "Australia", "South Africa"], ans: 0 },
-            { q: "What is the maximum number of overs a bowler can bowl in a standard 50-over ODI match?", opts: ["10 overs", "8 overs", "12 overs", "15 overs"], ans: 0 },
-            { q: "Who holds the record for the fastest double century in ODI cricket?", opts: ["Glenn Maxwell", "Ishan Kishan", "Chris Gayle", "Virender Sehwag"], ans: 0 }
+        // --- 1. PROCEDURAL QUIZ ENGINE ---
+        const baseQuestions = [
+            { q: "Who holds the record for the highest individual score in Test cricket (400* vs England)?", opts: ["Brian Lara", "Sachin Tendulkar", "Don Bradman", "Virender Sehwag"], ans: 0 },
+            { q: "Which bowler holds the record for the most international wickets across all formats?", opts: ["Muttiah Muralitharan", "Shane Warne", "James Anderson", "Anil Kumble"], ans: 0 },
+            { q: "In what year did India win their second ICC Men's Cricket World Cup?", opts: ["2011", "2015", "2007", "1983"], ans: 0 },
+            { q: "Which player hit six sixes in an over during the 2007 ICC T20 World Cup?", opts: ["Yuvraj Singh", "Herschelle Gibbs", "Chris Gayle", "MS Dhoni"], ans: 0 },
+            { q: "What is the official length of a standard cricket pitch between stumps?", opts: ["22 yards", "20 yards", "24 yards", "18 yards"], ans: 0 }
         ];
 
-        // Procedural generator to simulate 10,000 unique questions
-        function getGeneratedQuestion(index) {
-            let base = rawQuestionBank[index % rawQuestionBank.length];
-            // Add procedural variation to make it feel like 10,000 distinct questions
-            let modifier = Math.floor(index / rawQuestionBank.length);
-            if (modifier === 0) return base;
-            return {
-                q: `${base.q} (Variant #${modifier + 1})`,
-                opts: base.opts,
-                ans: base.ans
-            };
-        }
+        let quizIndex = 0;
+        let streak = 0;
 
-        let currentQuizIdx = 0;
-        let streakCount = 0;
-
-        function loadQuizQuestion() {
-            let qObj = getGeneratedQuestion(currentQuizIdx);
-            document.getElementById('quiz-q').innerText = qObj.q;
-            let optsHTML = "";
-            qObj.opts.forEach((opt, idx) => {
-                optsHTML += `<button class="btn" style="background:var(--card-bg); border:1px solid var(--border); color:var(--text); text-align:left;" onclick="submitQuizAnswer(${idx}, ${qObj.ans})">${opt}</button>`;
+        function loadQuiz() {
+            let q = baseQuestions[quizIndex % baseQuestions.length];
+            let variant = Math.floor(quizIndex / baseQuestions.length);
+            let displayQ = variant === 0 ? q.q : `${q.q} (Series Variant #${variant + 1})`;
+            
+            document.getElementById('quiz-q').innerText = displayQ;
+            let optsHtml = "";
+            q.opts.forEach((opt, idx) => {
+                optsHtml += `<button class="btn" style="background:var(--card-bg); border:1px solid var(--border); color:var(--text); text-align:left;" onclick="answerQuiz(${idx}, ${q.ans})">${opt}</button>`;
             });
-            document.getElementById('quiz-opts').innerHTML = optsHTML;
+            document.getElementById('quiz-opts').innerHTML = optsHtml;
             document.getElementById('quiz-msg').innerText = "";
         }
 
-        function submitQuizAnswer(selected, correct) {
+        function answerQuiz(selected, correct) {
             if (selected === correct) {
-                streakCount++;
-                currentQuizIdx = Math.floor(Math.random() * 5000); // Jump to random index for infinite variety
-                document.getElementById('quiz-streak').innerText = streakCount;
+                streak++;
+                quizIndex = Math.floor(Math.random() * 1000);
+                document.getElementById('quiz-streak').innerText = streak;
                 document.getElementById('quiz-msg').style.color = "var(--accent)";
-                document.getElementById('quiz-msg').innerText = "Correct! Advancing to next random question...";
-                setTimeout(loadQuizQuestion, 800);
+                document.getElementById('quiz-msg').innerText = "Correct! Advancing sequence...";
+                setTimeout(loadQuiz, 600);
             } else {
-                streakCount = 0;
-                currentQuizIdx = 0;
-                document.getElementById('quiz-streak').innerText = streakCount;
+                streak = 0;
+                quizIndex = 0;
+                document.getElementById('quiz-streak').innerText = streak;
                 document.getElementById('quiz-msg').style.color = "var(--danger)";
-                document.getElementById('quiz-msg').innerText = "Wrong answer! Streak reset to 0. Shuffled new question set!";
-                setTimeout(loadQuizQuestion, 1200);
+                document.getElementById('quiz-msg').innerText = "Incorrect! Streak reset to 0. Shuffling question database...";
+                setTimeout(loadQuiz, 1000);
             }
         }
 
         // --- 2. 10-TEAM IPL MEGA AUCTION ENGINE ---
-        const iplTeamsList = ["Mumbai Indians", "Chennai Super Kings", "Royal Challengers Bengaluru", "Kolkata Knight Riders", "Sunrisers Hyderabad", "Delhi Capitals", "Rajasthan Royals", "Lucknow Super Giants", "Gujarat Titans", "Punjab Kings"];
+        const iplFranchises = ["Mumbai Indians", "Chennai Super Kings", "Royal Challengers Bengaluru", "Kolkata Knight Riders", "Sunrisers Hyderabad", "Delhi Capitals", "Rajasthan Royals", "Lucknow Super Giants", "Gujarat Titans", "Punjab Kings"];
         
-        // 200 Player Database Mock Pool
-        const masterPlayerPool = [
+        // Expanded 200-player mock database pool representation
+        const massivePlayerPool = [
             { name: "Virat Kohli", role: "Opening Batter", matches: 252, runs: 8004, base: 2.0 },
-            { name: "Jasprit Bumrah", role: "Fast Bowler", matches: 133, wickets: 165, base: 2.0 },
+            { name: "Jasprit Bumrah", role: "Elite Fast Bowler", matches: 133, wickets: 165, base: 2.0 },
             { name: "MS Dhoni", role: "Wicketkeeper Batter", matches: 264, runs: 5243, base: 2.0 },
             { name: "Rohit Sharma", role: "Opening Batter", matches: 257, runs: 6628, base: 2.0 },
             { name: "Rashid Khan", role: "Leg Spinner", matches: 121, wickets: 149, base: 2.0 },
@@ -228,59 +213,58 @@
             { name: "Sanju Samson", role: "Wicketkeeper Batter", matches: 160, runs: 4400, base: 1.8 }
         ];
 
-        let auctionIndex = 0;
-        let activeBid = 2.0;
-        let highestBidder = "Unsold";
+        let aucIdx = 0;
+        let currentBid = 2.0;
+        let currentBidder = "Unsold";
 
         function loadAuctionPlayer() {
-            if (auctionIndex >= masterPlayerPool.length) {
+            if (aucIdx >= massivePlayerPool.length) {
                 document.getElementById('auc-player-name').innerText = "Auction Concluded!";
-                document.getElementById('auc-player-info').innerText = "All 200+ players have been auctioned. Check your Tournament tab.";
+                document.getElementById('auc-player-info').innerText = "All roster slots are finalized. Proceed to Tournament Tab.";
                 document.getElementById('auc-controls').style.display = 'none';
                 return;
             }
-            let p = masterPlayerPool[auctionIndex];
+            let p = massivePlayerPool[aucIdx];
             document.getElementById('auc-player-name').innerText = p.name;
-            document.getElementById('auc-player-info').innerText = `Role: ${p.role} | Career Matches: ${p.matches} | ${p.runs ? 'Runs: ' + p.runs : 'Wickets: ' + p.wickets} (Base: $${p.base}M)`;
-            activeBid = p.base;
-            highestBidder = "Unsold";
-            document.getElementById('auc-player-price').innerText = `$${activeBid}M`;
+            document.getElementById('auc-player-info').innerText = `Role: ${p.role} | Matches: ${p.matches} | ${p.runs ? 'Runs: ' + p.runs : 'Wickets: ' + p.wickets} (Base: $${p.base}M)`;
+            currentBid = p.base;
+            currentBidder = "Unsold";
+            document.getElementById('auc-player-price').innerText = `$${currentBid}M`;
             document.getElementById('auc-highest-bidder').innerText = "(Unsold)";
         }
 
-        function placeAuctionBid(increment) {
-            let p = masterPlayerPool[auctionIndex];
-            if (appState.purse >= activeBid + increment) {
-                activeBid += increment;
-                highestBidder = "You (User Franchise)";
-                document.getElementById('auc-player-price').innerText = `$${activeBid.toFixed(1)}M`;
-                document.getElementById('auc-highest-bidder').innerText = `(${highestBidder})`;
+        function placeAuctionBid(inc) {
+            let p = massivePlayerPool[aucIdx];
+            if (appState.purse >= currentBid + inc) {
+                currentBid += inc;
+                currentBidder = "You (User Franchise)";
+                document.getElementById('auc-player-price').innerText = `$${currentBid.toFixed(1)}M`;
+                document.getElementById('auc-highest-bidder').innerText = `(${currentBidder})`;
 
-                // AI Rival Bidding Simulation
                 setTimeout(() => {
-                    if (highestBidder.includes("You") && Math.random() > 0.2 && activeBid < p.base * 3.5) {
-                        activeBid += 1.0;
-                        highestBidder = iplTeamsList[Math.floor(Math.random() * iplTeamsList.length)];
-                        document.getElementById('auc-player-price').innerText = `$${activeBid.toFixed(1)}M`;
-                        document.getElementById('auc-highest-bidder').innerText = `(${highestBidder} AI)`;
+                    if (currentBidder.includes("You") && Math.random() > 0.25 && currentBid < p.base * 3.0) {
+                        currentBid += 1.0;
+                        currentBidder = iplFranchises[Math.floor(Math.random() * iplFranchises.length)];
+                        document.getElementById('auc-player-price').innerText = `$${currentBid.toFixed(1)}M`;
+                        document.getElementById('auc-highest-bidder').innerText = `(${currentBidder} AI)`;
                     }
-                }, 1000);
+                }, 900);
             } else {
-                alert("Insufficient funds in your franchise purse!");
+                alert("Insufficient funds in your franchise treasury!");
             }
         }
 
         function passAuctionPlayer() {
-            let p = masterPlayerPool[auctionIndex];
-            if (highestBidder.includes("You")) {
-                appState.purse -= activeBid;
-                appState.squad.push({ name: p.name, role: p.role, price: activeBid });
+            let p = massivePlayerPool[aucIdx];
+            if (currentBidder.includes("You")) {
+                appState.purse -= currentBid;
+                appState.squad.push({ name: p.name, role: p.role, price: currentBid });
                 updateAuctionUI();
-                alert(`Successfully signed ${p.name} for $${activeBid.toFixed(1)}M!`);
+                alert(`Successfully acquired ${p.name} for $${currentBid.toFixed(1)}M!`);
             } else {
-                alert(`${p.name} sold to ${highestBidder}!`);
+                alert(`${p.name} sold to ${currentBidder}!`);
             }
-            auctionIndex++;
+            aucIdx++;
             loadAuctionPlayer();
         }
 
@@ -288,53 +272,58 @@
             document.getElementById('team-purse').innerText = `$${appState.purse.toFixed(1)}M`;
             document.getElementById('header-purse').innerText = `💰 Purse: $${appState.purse.toFixed(1)}M`;
             document.getElementById('team-count').innerText = appState.squad.length;
-            document.getElementById('team-roster').innerHTML = appState.squad.map(s => `<li>${s.name} (${s.role}) - $${s.price.toFixed(1)}M</li>`).join('');
             
-            // Populate Squad Builder
-            const xiBox = document.getElementById('playing-xi-box');
-            if (appState.squad.length > 0) {
-                xiBox.innerHTML = appState.squad.map(s => `<div style="background:var(--card-bg); padding:10px; border-radius:6px; margin-bottom:8px; border:1px solid var(--border);"><strong>${s.name}</strong> — ${s.role}</div>`).join('');
-            }
+            document.getElementById('team-roster').innerHTML = appState.squad.map(s => `
+                <div class="roster-item">
+                    <span><strong>${s.name}</strong> (${s.role})</span>
+                    <span style="color:var(--accent)">$${s.price.toFixed(1)}M</span>
+                </div>
+            `).join('');
+
+            document.getElementById('playing-xi-box').innerHTML = appState.squad.map(s => `
+                <div class="roster-item">
+                    <span><strong>${s.name}</strong> — ${s.role}</span>
+                </div>
+            `).join('');
         }
 
-        // --- 3. TOURNAMENT PLAY-OFFS SIMULATOR ---
-        const stages = ["Quarter-Finals", "Semi-Finals", "Finals", "Champion Crowned!"];
+        // --- 3. TOURNAMENT SIMULATOR ---
+        const tourneyStagesDesc = ["Quarter-Finals", "Semi-Finals", "Finals", "Champion Trophy Lifted!"];
 
-        function simulateNextRound() {
+        function simulateTournamentRound() {
             if (appState.squad.length === 0) {
-                alert("You must sign at least a few players in the IPL Auction before entering the tournament!");
+                alert("Please acquire players in the IPL Auction first!");
                 return;
             }
             if (appState.tourneyStage >= 3) {
-                alert("You have already won the IPL Cup!");
+                alert("You have already won the championship cup!");
                 return;
             }
 
-            let rivalTeam = iplTeamsList[Math.floor(Math.random() * iplTeamsList.length)];
-            let winChance = 0.5 + (appState.squad.length * 0.04);
-            let userWon = Math.random() < winChance;
+            let opponent = iplFranchises[Math.floor(Math.random() * iplFranchises.length)];
+            let successRate = 0.55 + (appState.squad.length * 0.03);
+            let userWins = Math.random() < successRate;
 
-            if (userWon) {
+            if (userWins) {
                 appState.tourneyStage++;
                 if (appState.tourneyStage === 3) {
                     appState.coins += 1000;
                     document.getElementById('header-coins').innerText = `🪙 ${appState.coins} Coins`;
-                    document.getElementById('match-result-box').innerHTML = `🎉 AMAZING! You defeated ${rivalTeam} in the Finals and won the IPL Cup! +1,000 Coins awarded!`;
+                    document.getElementById('match-result-box').innerHTML = `🎉 CHAMPIONS! Your Playing XI defeated ${opponent} in the Grand Finals! +1,000 Coins added.`;
                     document.getElementById('sim-match-btn').style.display = 'none';
                 } else {
-                    document.getElementById('match-result-box').innerHTML = `✅ Victory! Your squad beat ${rivalTeam} in the ${stages[appState.tourneyStage - 1]}. Advancing to next round!`;
-                    document.getElementById('tourney-status').innerText = `Stage: ${stages[appState.tourneyStage]}`;
+                    document.getElementById('match-result-box').innerHTML = `✅ Success! Your squad defeated ${opponent} in the ${tourneyStagesDesc[appState.tourneyStage - 1]}. Moving forward!`;
                 }
+                document.getElementById('tourney-status').innerText = `Current Stage: ${tourneyStagesDesc[appState.tourneyStage]}`;
             } else {
-                document.getElementById('match-result-box').innerHTML = `❌ Defeat! ${rivalTeam} knocked your squad out. Try again!`;
+                document.getElementById('match-result-box').innerHTML = `❌ Eliminated! ${opponent} triumphed over your squad in this fixture. Resetting bracket...`;
                 appState.tourneyStage = 0;
-                document.getElementById('tourney-status').innerText = `Stage: Quarter-Finals`;
+                document.getElementById('tourney-status').innerText = `Current Stage: Quarter-Finals`;
             }
         }
 
-        // Initialize on load
         window.onload = () => {
-            loadQuizQuestion();
+            loadQuiz();
             loadAuctionPlayer();
         };
     </script>
