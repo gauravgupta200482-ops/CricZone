@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CricPulse Pro - Ultimate Cricket Hub</title>
+    <!-- Chart.js for Win Probability Graph -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- PWA Manifest Link Placeholder -->
+    <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22CricPulse%20Pro%22%2C%22short_name%22%3A%22CricPulse%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%231e3a8a%22%2C%22theme_color%22%3A%22%231e3a8a%22%7D">
+    <style>
+        :root {
+            --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --primary: #2563eb; --accent: #10b981; --border: #e2e8f0;
+        }
+        .dark-mode {
+            --bg: #0f172a; --card-bg: #1e293b; --text: #f8fafc; --primary: #3b82f6; --accent: #34d399; --border: #334155;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--bg); color: var(--text); transition: 0.3s; }
+        header { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        nav { display: flex; gap: 10px; background: var(--card-bg); padding: 10px 20px; border-bottom: 1px solid var(--border); overflow-x: auto; }
+        nav button { background: transparent; border: none; color: var(--text); font-weight: 600; cursor: pointer; padding: 8px 12px; border-radius: 4px; white-space: nowrap; }
+        nav button:hover, nav button.active { background: var(--primary); color: white; }
+        .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        button.action-btn { background: var(--accent); color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button.action-btn:hover { opacity: 0.9; }
+        .player-card { border: 2px solid gold; border-radius: 8px; padding: 15px; text-align: center; background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #111; }
+        .flex-row { display: flex; justify-content: space-between; align-items: center; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🏏 CricPulse Pro</h1>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <span id="user-coins" style="font-weight: bold; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 20px;">🪙 500 Coins</span>
+            <button onclick="toggleDarkMode()" style="background:transparent; border:1px solid white; color:white; padding:5px 10px; border-radius:4px; cursor:pointer;">🌓 Dark Mode</button>
+        </div>
+    </header>
+
+    <nav>
+        <button class="active" onclick="switchTab('live', this)">Live & Scoreboards</button>
+        <button onclick="switchTab('ai', this)">AI Predictor & Graph</button>
+        <button onclick="switchTab('auction', this)">IPL Auction Sim</button>
+        <button onclick="switchTab('cards', this)">Card Vault & Daily</button>
+        <button onclick="switchTab('game', this)">Mini Game</button>
+    </nav>
+
+    <div class="container">
+
+        <!-- TAB 1: LIVE & SCOREBOARDS -->
+        <div id="live" class="tab-content active">
+            <h2>🔴 Live International Matches</h2>
+            <div class="card">
+                <div class="flex-row">
+                    <h3>India vs Australia (1st Test)</h3>
+                    <span style="color: red; font-weight: bold;">LIVE</span>
+                </div>
+                <p><strong>Score:</strong> IND 342/6 & 112/2 vs AUS 310/10</p>
+                <p><em>Day 4 - Session 3: India lead by 144 runs</em></p>
+                <hr style="border:0; border-top:1px solid var(--border);">
+                <h4>Recent Past Scorecards</h4>
+                <ul>
+                    <li>England vs New Zealand (3rd ODI) – ENG won by 45 runs</li>
+                    <li>South Africa vs Pakistan (2nd T20I) – PAK won by 6 wickets</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TAB 2: AI PREDICTOR & GRAPH -->
+        <div id="ai" class="tab-content">
+            <h2>🤖 AI Win Probability & Live Graph</h2>
+            <div class="card">
+                <p>AI Real-time calculation based on pitch state, run rate, and wickets remaining:</p>
+                <h3 style="color: var(--accent);">India Winning Probability: <span id="prob-val">78%</span></h3>
+                <canvas id="winChart" width="400" height="150"></canvas>
+            </div>
+        </div>
+
+        <!-- TAB 3: IPL AUCTION SIMULATOR -->
+        <div id="auction" class="tab-content">
+            <h2>🔨 IPL Auction Simulator</h2>
+            <div class="card">
+                <p>Purse Remaining: <strong id="purse">$100.0M</strong></p>
+                <div id="auction-box">
+                    <h3 id="player-on-block">Star Player: Jasprit Bumrah (Bowler)</h3>
+                    <p>Base Price: $2.0M</p>
+                    <button class="action-btn" onclick="bidPlayer(3.0)">Bid $3.0M</button>
+                    <button class="action-btn" style="background:#ef4444;" onclick="passPlayer()">Pass</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: CARD COLLECTION & DAILY REWARDS -->
+        <div id="cards" class="tab-content">
+            <h2>🎴 Cricket Card Vault & Daily Bonus</h2>
+            <div class="card">
+                <button class="action-btn" onclick="claimDaily()">🎁 Claim Daily 100 Coins</button>
+                <button class="action-btn" onclick="openPack()" style="background:#8b5cf6; margin-left: 10px;">📦 Open Card Pack (150 Coins)</button>
+                <h3>Your Collected Cards:</h3>
+                <div id="card-vault" class="grid" style="margin-top: 15px;">
+                    <p>No cards collected yet. Open a pack to start your collection!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: MINI GAME -->
+        <div id="game" class="tab-content">
+            <h2>🎮 Classic Browser Cricket Game</h2>
+            <div class="card" style="text-align: center;">
+                <iframe src="https://www.google.com/logos/2017/cricket17/cricket17.html" width="100%" height="450px" style="border:none; border-radius: 6px;"></iframe>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Global State
+        let state = { coins: 500, purse: 100.0, cards: [] };
+
+        // Tab Navigation Switcher
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // Chart.js Win Probability Graph Initialization
+        const ctx = document.getElementById('winChart').getContext('2d');
+        const winChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Over 10', '20', '30', '40', '50'],
+                datasets: [{
+                    label: 'India Win %',
+                    data: [30, 45, 60, 70, 78],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: { responsive: true, scales: { y: { beginAtZero: true, max: 100 } } }
+        });
+
+        // IPL Auction Logic
+        let currentBid = 2.0;
+        const playersList = ["Virat Kohli (Batsman)", "MS Dhoni (Wicketkeeper)", "Rashid Khan (All-Rounder)", "Pat Cummins (Captain)"];
+        let playerIndex = 0;
+
+        function bidPlayer(amount) {
+            if (state.purse >= amount) {
+                state.purse -= amount;
+                document.getElementById('purse').innerText = `$${state.purse.toFixed(1)}M`;
+                alert("Successfully signed player to your squad!");
+                passPlayer();
+            } else {
+                alert("Not enough purse funds left!");
+            }
+        }
+
+        function passPlayer() {
+            playerIndex = (playerIndex + 1) % playersList.length;
+            document.getElementById('player-on-block').innerText = `Star Player: ${playersList[playerIndex]}`;
+        }
+
+        // Daily Rewards & Card Pack Logic
+        function claimDaily() {
+            state.coins += 100;
+            updateUI();
+            alert("Claimed 100 daily bonus coins!");
+        }
+
+        function openPack() {
+            if (state.coins >= 150) {
+                state.coins -= 150;
+                const pool = ["Virat Kohli - [Legendary]", "Jasprit Bumrah - [Epic]", "Rohit Sharma - [Epic]", "Rachin Ravindra - [Rare]"];
+                const wonCard = pool[Math.floor(Math.random() * pool.length)];
+                state.cards.push(wonCard);
+                updateUI();
+                renderVault();
+                alert(`You unpacked: ${wonCard}!`);
+            } else {
+                alert("You need 150 coins to open a card pack!");
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('user-coins').innerText = `🪙 ${state.coins} Coins`;
+        }
+
+        function renderVault() {
+            const vault = document.getElementById('card-vault');
+            if (state.cards.length === 0) return;
+            vault.innerHTML = state.cards.map(c => `<div class="player-card"><h4>🏏 Player Card</h4><p><strong>${c}</strong></p></div>`).join('');
+        }
+    </script>
+</body>
+</html>
