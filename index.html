@@ -81,14 +81,18 @@
                         <h2 id="auc-player-name" style="margin: 8px 0;">Loading Player...</h2>
                         <div id="auc-card-details" style="color: var(--text-muted); margin: 10px 0 20px 0; line-height: 1.6;">Fetching stats...</div>
                         
-                        <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 24px;">
+                        <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 20px;">
                             Current Bid: <span id="auc-player-price" style="color: var(--accent);">$2.0M</span> 
                             <span id="auc-highest-bidder" style="font-size: 0.95rem; color: var(--text-muted); margin-left: 10px;">(Unsold)</span>
                         </div>
 
-                        <div id="auc-controls" style="display: flex; gap: 12px; flex-wrap: wrap;">
-                            <button class="btn btn-action btn-success" onclick="placeAuctionBid(2.0)">Bid +$2.0M</button>
-                            <button class="btn btn-action btn-success" onclick="placeAuctionBid(4.0)" style="background: #047857;">Aggressive Bid +$4.0M</button>
+                        <!-- 5 BID OPTIONS (.5M, 1M, 2M, 3M, 4M) -->
+                        <div id="auc-controls" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="btn btn-action btn-success" onclick="placeAuctionBid(0.5)">+$0.5M</button>
+                            <button class="btn btn-action btn-success" onclick="placeAuctionBid(1.0)">+$1.0M</button>
+                            <button class="btn btn-action btn-success" onclick="placeAuctionBid(2.0)">+$2.0M</button>
+                            <button class="btn btn-action btn-success" onclick="placeAuctionBid(3.0)" style="background: #0d9488;">+$3.0M</button>
+                            <button class="btn btn-action btn-success" onclick="placeAuctionBid(4.0)" style="background: #047857;">+$4.0M</button>
                             <button class="btn btn-action btn-danger" onclick="passAuctionPlayer()">Pass / Drop</button>
                         </div>
                     </div>
@@ -278,7 +282,7 @@
             `;
             currentBid = p.base;
             bidLeader = "Unsold";
-            document.getElementById('auc-player-price').innerText = `$${currentBid}M`;
+            document.getElementById('auc-player-price').innerText = `$${currentBid.toFixed(1)}M`;
             document.getElementById('auc-highest-bidder').innerText = "(Unsold)";
         }
 
@@ -290,11 +294,14 @@
                 document.getElementById('auc-highest-bidder').innerText = `(${bidLeader})`;
 
                 setTimeout(() => {
-                    if (bidLeader.includes("You") && Math.random() > 0.1 && currentBid < 10.5) {
-                        currentBid += 2.0;
+                    if (bidLeader.includes("You") && Math.random() > 0.15 && currentBid < 12.0) {
+                        // AI counters with a random dynamic raise between 0.5M and 2.0M
+                        const aiIncrements = [0.5, 1.0, 1.5, 2.0];
+                        let aiInc = aiIncrements[Math.floor(Math.random() * aiIncrements.length)];
+                        currentBid += aiInc;
                         bidLeader = iplTeamsList[Math.floor(Math.random() * iplTeamsList.length)];
                         document.getElementById('auc-player-price').innerText = `$${currentBid.toFixed(1)}M`;
-                        document.getElementById('auc-highest-bidder').innerText = `(${bidLeader} AI - Aggressive!)`;
+                        document.getElementById('auc-highest-bidder').innerText = `(${bidLeader} AI - Counter Bid!)`;
                     }
                 }, 600);
             } else {
@@ -359,7 +366,7 @@
                 <strong>Stage:</strong> ${tourneyStagesDesc[appState.tourneyStage]}<br><br>
                 🏏 <strong>Your Innings:</strong> ${userScore} / ${userWickets} (20 Overs)<br>
                 ⚾ <strong>${opponent} Innings:</strong> ${aiScore} / ${aiWickets} (20 Overs)<br><br>
-                <em>Result: exact winner match status logged</em> <strong style="color:${userWon ? 'var(--accent)' : 'var(--danger)'};">${userWon ? 'You won by ' + (userScore - aiScore) + ' runs!' : opponent + ' won by ' + (aiScore - userScore) + ' runs!'}</strong>
+                <em>Result:</em> <strong style="color:${userWon ? 'var(--accent)' : 'var(--danger)'};">${userWon ? 'You won by ' + (userScore - aiScore) + ' runs!' : opponent + ' won by ' + (aiScore - userScore) + ' runs!'}</strong>
             `;
 
             document.getElementById('match-scorecard-box').innerHTML = scorecardHTML;
