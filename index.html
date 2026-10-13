@@ -175,15 +175,15 @@
             { q: "Which bowler has taken the most international wickets across all three formats combined?", opts: ["Shane Warne", "Glenn McGrath", "Muttiah Muralitharan", "Wasim Akram"], ans: 2 },
             { q: "Who holds the record for the fastest century in ODI cricket (off 31 balls)?", opts: ["AB de Villiers", "Shahid Afridi", "Corey Anderson", "Jos Buttler"], ans: 0 },
             { q: "Which country holds the record for the highest team total in a Test inning (952/6 decl)?", opts: ["Australia", "Sri Lanka", "England", "India"], ans: 1 },
-            { q: "The term \"Mankading\" refers to which type of dismissal?", opts: ["Hit wicket while playing a sweep", "Running out a non-striker backing up before the ball is bowled", "Catching the ball off the bowler's foot", "Stumped off a wide ball"], ans: 1 },
-            { q: "Which iconic cricket ground is widely known as the \"Home of Cricket\"?", opts: ["The MCG (Melbourne)", "Eden Gardens (Kolkata)", "Lord's (London)", "The Oval (London)"], ans: 2 },
-            { q: "What does \"DLS\" stand for in rain-affected cricket matches?", opts: ["Duckworth-Lewis-Stern", "Direct-Line-System", "Dynamic-Length-Standard", "Duckworth-Law-Strategy"], ans: 0 },
+            { q: "The term 'Mankading' refers to which type of dismissal?", opts: ["Hit wicket while playing a sweep", "Running out a non-striker backing up before the ball is bowled", "Catching the ball off the bowler's foot", "Stumped off a wide ball"], ans: 1 },
+            { q: "Which iconic cricket ground is widely known as the 'Home of Cricket'?", opts: ["The MCG (Melbourne)", "Eden Gardens (Kolkata)", "Lord's (London)", "The Oval (London)"], ans: 2 },
+            { q: "What does 'DLS' stand for in rain-affected cricket matches?", opts: ["Duckworth-Lewis-Stern", "Direct-Line-System", "Dynamic-Length-Standard", "Duckworth-Law-Strategy"], ans: 0 },
             { q: "Which trophy is contested in the famous biannual Test series between England and Australia?", opts: ["The Border-Gavaskar Trophy", "The Ashes", "The Freedom Trophy", "The Wisden Trophy"], ans: 1 },
-            { q: "In cricket, what is a \"Golden Duck\"?", opts: ["Getting out for zero on the first ball faced", "Getting out for zero without facing a ball", "Getting out for zero on the last ball of an innings", "Getting out for zero in both innings of a Test match"], ans: 0 },
+            { q: "In cricket, what is a 'Golden Duck'?", opts: ["Getting out for zero on the first ball faced", "Getting out for zero without facing a ball", "Getting out for zero on the last ball of an innings", "Getting out for zero in both innings of a Test match"], ans: 0 },
             { q: "Which country hosted the 2011 ICC Men's Cricket World Cup final where India defeated Sri Lanka?", opts: ["Bangladesh", "Sri Lanka", "India", "England"], ans: 2 },
             { q: "Who holds the record for the fastest century in Test cricket (off 54 balls)?", opts: ["Brendon McCullum", "Adam Gilchrist", "Sir Vivian Richards", "Chris Gayle"], ans: 0 },
             { q: "What is the length of a cricket pitch measured from stump to stump?", opts: ["60 feet", "66 feet", "72 feet", "75 feet"], ans: 1 },
-            { q: "Which bowler bowled the famous \"Ball of the Century\" to bowl out Mike Gatting in 1993?", opts: ["Shane Warne", "Muttiah Muralitharan", "Anil Kumble", "Mushtaq Ahmed"], ans: 0 },
+            { q: "Which bowler bowled the famous 'Ball of the Century' to bowl out Mike Gatting in 1993?", opts: ["Shane Warne", "Muttiah Muralitharan", "Anil Kumble", "Mushtaq Ahmed"], ans: 0 },
             { q: "Who was the first batter to score 10,000 runs in Test cricket?", opts: ["Sir Donald Bradman", "Allan Border", "Sunil Gavaskar", "Sachin Tendulkar"], ans: 2 }
         ];
 
@@ -278,24 +278,24 @@
             document.getElementById('auc-card-details').innerHTML = `
                 <strong>Role:</strong> ${p.role}<br>
                 <strong>Matches:</strong> ${p.matches} | ${p.runs !== undefined ? 'Runs: ' + p.runs + ' ' : ''}${p.wickets !== undefined ? 'Wickets: ' + p.wickets : ''}<br>
-                <strong>Base Price:</strong> $${p.base}M
+                <strong>Base Price:</strong> $${p.base.toFixed(1)}M
             `;
-            currentBid = p.base;
+            currentBid = parseFloat(p.base);
             bidLeader = "Unsold";
             document.getElementById('auc-player-price').innerText = `$${currentBid.toFixed(1)}M`;
             document.getElementById('auc-highest-bidder').innerText = "(Unsold)";
         }
 
         function placeAuctionBid(inc) {
-            if (appState.purse >= currentBid + inc) {
-                currentBid += inc;
+            let increment = parseFloat(inc);
+            if (appState.purse >= currentBid + increment) {
+                currentBid += increment;
                 bidLeader = "You (User Franchise)";
                 document.getElementById('auc-player-price').innerText = `$${currentBid.toFixed(1)}M`;
                 document.getElementById('auc-highest-bidder').innerText = `(${bidLeader})`;
 
                 setTimeout(() => {
-                    if (bidLeader.includes("You") && Math.random() > 0.15 && currentBid < 12.0) {
-                        // AI counters with a random dynamic raise between 0.5M and 2.0M
+                    if (bidLeader.includes("You") && Math.random() > 0.15 && currentBid < 14.0) {
                         const aiIncrements = [0.5, 1.0, 1.5, 2.0];
                         let aiInc = aiIncrements[Math.floor(Math.random() * aiIncrements.length)];
                         currentBid += aiInc;
