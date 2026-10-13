@@ -48,7 +48,7 @@
     </header>
 
     <nav>
-        <button class="active" onclick="switchTab('quiz', this)">1. Infinite Jumbled Quiz</button>
+        <button class="active" onclick="switchTab('quiz', this)">1. Infinite Jumbled Quiz (175+)</button>
         <button onclick="switchTab('auction', this)">2. IPL Mega Auction ($90M)</button>
         <button onclick="switchTab('tournament', this)">3. Playing XI & Match Sim</button>
     </nav>
@@ -58,7 +58,7 @@
         <!-- TAB 1: INFINITE JUMBLED QUIZ -->
         <div id="quiz" class="tab-section active">
             <div class="card">
-                <h2>🧠 Infinite Jumbled Cricket Quiz</h2>
+                <h2>🧠 Infinite Jumbled Cricket Quiz (All 175 Questions Loaded)</h2>
                 <p style="color: var(--text-muted);">Questions shuffle dynamically every session. Answer correctly to advance your streak. One wrong answer resets your streak to 0 and re-jumbles the entire bank!</p>
                 <div style="background: var(--bg); border: 1px solid var(--border); padding: 24px; border-radius: 10px; margin-top: 20px;">
                     <h3>Current Streak: <span id="quiz-streak" style="color: var(--accent);">0</span> Correct Answers</h3>
@@ -134,3 +134,406 @@
         </div>
 
     </div>
+
+    <script>
+        let appState = {
+            purse: 90.0,
+            coins: 0,
+            squad: [],
+            tourneyStage: 0
+        };
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // --- ALL 175+ MASTER QUIZ BANK ---
+        const masterQuizBank = [
+            { q: "According to the MCC Laws of Cricket, how long is the pitch between the two sets of wickets?", opts: ["20 yards (18.29 m)", "22 yards (20.12 m)", "24 yards (21.95 m)", "25 yards (22.86 m)"], ans: 1 },
+            { q: "Which of the following dismissals does NOT add runs to the bowler's wicket tally?", opts: ["Stumped", "Caught", "Run Out", "Hit Wicket"], ans: 2 },
+            { q: "If a fielder uses their helmet placed on the ground to stop a live ball, how many penalty runs are awarded to the batting side?", opts: ["4 runs", "5 runs", "6 runs", "7 runs"], ans: 1 },
+            { q: "How many ways can a batter be dismissed in cricket according to the official MCC laws?", opts: ["9", "10", "11", "12"], ans: 1 },
+            { q: "What is the maximum allowed width of a cricket bat according to the laws?", opts: ["3.5 inches (8.89 cm)", "4.25 inches (10.8 cm)", "4.5 inches (11.43 cm)", "5.0 inches (12.7 cm)"], ans: 1 },
+            { q: "In which year was the first official Test match played between Australia and England?", opts: ["1868", "1877", "1882", "1901"], ans: 1 },
+            { q: "Who holds the record for the highest individual score in a single Test inning (400 not out)?", opts: ["Sir Vivian Richards", "Sachin Tendulkar", "Brian Lara", "Sir Donald Bradman"], ans: 2 },
+            { q: "Sir Donald Bradman finished his Test career with a legendary batting average of:", opts: ["98.40", "99.94", "101.20", "95.50"], ans: 1 },
+            { q: "Who was the first bowler in international cricket to take 800 Test wickets?", opts: ["Shane Warne", "Anil Kumble", "Muttiah Muralitharan", "James Anderson"], ans: 2 },
+            { q: "Which country played its inaugural Test match in 2000 against India in Dhaka?", opts: ["Bangladesh", "Zimbabwe", "Ireland", "Afghanistan"], ans: 0 },
+            { q: "Which country won the inaugural ICC Men's Cricket World Cup in 1975?", opts: ["Australia", "England", "West Indies", "India"], ans: 2 },
+            { q: "Who was the captain of the Indian cricket team when they won their first World Cup in 1983?", opts: ["Sunil Gavaskar", "Kapil Dev", "Ravi Shastri", "Mohinder Amarnath"], ans: 1 },
+            { q: "Which team has won the most ICC Men's Cricket World Cup titles (50-over format)?", opts: ["India", "West Indies", "England", "Australia"], ans: 3 },
+            { q: "In which year was the first ICC Men's T20 World Cup held?", opts: ["2005", "2007", "2009", "2010"], ans: 1 },
+            { q: "Who hit six 6s in an over against England's Stuart Broad during the 2007 T20 World Cup?", opts: ["Yuvraj Singh", "Chris Gayle", "Herschelle Gibbs", "Shahid Afridi"], ans: 0 },
+            { q: "Who scored the first double century in Men's One Day International (ODI) cricket?", opts: ["Virender Sehwag", "Chris Gayle", "Sachin Tendulkar", "Rohit Sharma"], ans: 2 },
+            { q: "What is the highest individual score in ODI cricket history (264 runs)?", opts: ["Martin Guptill", "Rohit Sharma", "Trevor Chappell", "Chris Gayle"], ans: 1 },
+            { q: "Which bowler has taken the most international wickets across all three formats combined?", opts: ["Shane Warne", "Glenn McGrath", "Muttiah Muralitharan", "Wasim Akram"], ans: 2 },
+            { q: "Who holds the record for the fastest century in ODI cricket (off 31 balls)?", opts: ["AB de Villiers", "Shahid Afridi", "Corey Anderson", "Jos Buttler"], ans: 0 },
+            { q: "Which country holds the record for the highest team total in a Test inning (952/6 decl)?", opts: ["Australia", "Sri Lanka", "England", "India"], ans: 1 },
+            { q: "The term 'Mankading' refers to which type of dismissal?", opts: ["Hit wicket while playing a sweep", "Running out a non-striker backing up before the ball is bowled", "Catching the ball off the bowler's foot", "Stumped off a wide ball"], ans: 1 },
+            { q: "Which iconic cricket ground is widely known as the 'Home of Cricket'?", opts: ["The MCG (Melbourne)", "Eden Gardens (Kolkata)", "Lord's (London)", "The Oval (London)"], ans: 2 },
+            { q: "What does 'DLS' stand for in rain-affected cricket matches?", opts: ["Duckworth-Lewis-Stern", "Direct-Line-System", "Dynamic-Length-Standard", "Duckworth-Law-Strategy"], ans: 0 },
+            { q: "Which trophy is contested in the famous biannual Test series between England and Australia?", opts: ["The Border-Gavaskar Trophy", "The Ashes", "The Freedom Trophy", "The Wisden Trophy"], ans: 1 },
+            { q: "In cricket, what is a 'Golden Duck'?", opts: ["Getting out for zero on the first ball faced", "Getting out for zero without facing a ball", "Getting out for zero on the last ball of an innings", "Getting out for zero in both innings of a Test match"], ans: 0 },
+            { q: "Which country hosted the 2011 ICC Men's Cricket World Cup final where India defeated Sri Lanka?", opts: ["Bangladesh", "Sri Lanka", "India", "England"], ans: 2 },
+            { q: "Who holds the record for the fastest century in Test cricket (off 54 balls)?", opts: ["Brendon McCullum", "Adam Gilchrist", "Sir Vivian Richards", "Chris Gayle"], ans: 0 },
+            { q: "What is the length of a cricket pitch measured from stump to stump?", opts: ["60 feet", "66 feet", "72 feet", "75 feet"], ans: 1 },
+            { q: "Which bowler bowled the famous 'Ball of the Century' to bowl out Mike Gatting in 1993?", opts: ["Shane Warne", "Muttiah Muralitharan", "Anil Kumble", "Mushtaq Ahmed"], ans: 0 },
+            { q: "Who was the first batter to score 10,000 runs in Test cricket?", opts: ["Sir Donald Bradman", "Allan Border", "Sunil Gavaskar", "Sachin Tendulkar"], ans: 2 },
+            { q: "How many players are on the field for the fielding side during a live over?", opts: ["10", "11", "12", "9"], ans: 1 },
+            { q: "What is the maximum number of overs a single bowler can bowl in a standard 50-over ODI match?", opts: ["8", "10", "12", "15"], ans: 1 },
+            { q: "Which team won the inaugural Indian Premier League (IPL) title in 2008?", opts: ["Chennai Super Kings", "Mumbai Indians", "Rajasthan Royals", "Royal Challengers Bengaluru"], ans: 2 },
+            { q: "Who holds the record for the highest individual score in a T20 International match (172 runs)?", opts: ["Aaron Finch", "Chris Gayle", "Glenn Maxwell", "Suryakumar Yadav"], ans: 0 },
+            { q: "What is the color of the ball used in night Test matches (day-night Tests)?", opts: ["Red", "White", "Pink", "Orange"], ans: 2 },
+            { q: "Which cricketer is nicknamed 'The Rawalpindi Express'?", opts: ["Shoaib Akhtar", "Wasim Akram", "Waqar Younis", "Brett Lee"], ans: 0 },
+            { q: "Who was the first woman to score a double century in Women's One Day Internationals?", opts: ["Mithali Raj", "Belinda Clark", "Meg Lanning", "Ellyse Perry"], ans: 1 },
+            { q: "What happens if a bowler bowls two high waist-full tosses (beamers) in an innings?", opts: ["10 penalty runs awarded", "The bowler is suspended from bowling for the remainder of the innings", "The match is forfeited", "The team captain is fined"], ans: 1 },
+            { q: "Who won the Man of the Tournament award in the 2019 ICC Men's Cricket World Cup?", opts: ["Ben Stokes", "Kane Williamson", "Rohit Sharma", "Mitchell Starc"], ans: 1 },
+            { q: "Which venue is known as the 'WACA'?", opts: ["Sydney Cricket Ground", "Perth Cricket Ground", "Brisbane Cricket Ground", "Adelaide Oval"], ans: 1 },
+            { q: "What is the maximum thickness allowed for the edges of a cricket bat?", opts: ["30 mm", "35 mm", "40 mm", "45 mm"], ans: 2 },
+            { q: "Which country won the 2021 ICC World Test Championship final?", opts: ["India", "New Zealand", "Australia", "England"], ans: 1 },
+            { q: "Who scored the fastest 50 in T20 International cricket (off 9 balls)?", opts: ["Yuvraj Singh", "Dipendra Singh Airee", "Chris Gayle", "Marcus Stoinis"], ans: 1 },
+            { q: "Which fielding position is situated directly behind the wicketkeeper?", opts: ["Slip", "Fine Leg", "Third Man", "Long Stop"], ans: 3 },
+            { q: "Who was the first captain to win all three major ICC trophies (World Cup, T20 World Cup, Champions Trophy)?", opts: ["Ricky Ponting", "MS Dhoni", "Clive Lloyd", "Eoin Morgan"], ans: 1 },
+            { q: "What is a 'Diamond Duck' in cricket?", opts: ["Getting out on the first ball of the match", "Getting out for zero without facing a single legal ball", "Getting out for zero in both innings of a Test", "Getting out on the last ball of an innings for zero"], ans: 1 },
+            { q: "How many seam stitches are roughly on a standard regulation cricket ball?", opts: ["350 to 400", "500 to 550", "600 to 650", "800 to 850"], ans: 2 },
+            { q: "Which country won the inaugural ICC Women's T20 World Cup in 2009?", opts: ["Australia", "England", "New Zealand", "West Indies"], ans: 1 },
+            { q: "Who holds the record for the most catch dismissals by a wicketkeeper in Test history?", opts: ["Adam Gilchrist", "Mark Boucher", "Kumar Sangakkara", "Ian Healy"], ans: 1 },
+            { q: "Which bowler has taken the most hat-tricks in international cricket across formats?", opts: ["Wasim Akram", "Lasith Malinga", "Brett Lee", "Trent Boult"], ans: 1 },
+            { q: "What is the distance from the bowling crease to the popping crease?", opts: ["3 feet (0.91 m)", "4 feet (1.22 m)", "5 feet (1.52 m)", "6 feet (1.83 m)"], ans: 1 },
+            { q: "Who was the first batter to hit 500 sixes in international cricket across all formats?", opts: ["Shahid Afridi", "Chris Gayle", "Rohit Sharma", "Brendon McCullum"], ans: 1 },
+            { q: "Which nation is known as the 'Proteas'?", opts: ["New Zealand", "South Africa", "Zimbabwe", "Sri Lanka"], ans: 1 },
+            { q: "In what year was the Imperial Cricket Conference (now ICC) founded?", opts: ["1887", "1909", "1926", "1948"], ans: 1 },
+            { q: "Who was named the ICC Player of the Century in 2000?", opts: ["Sir Donald Bradman", "Sir Garfield Sobers", "Shane Warne", "Sir Viv Richards"], ans: 0 },
+            { q: "What color of ball is used in standard daytime limited-overs international matches?", opts: ["Red", "White", "Pink", "Yellow"], ans: 1 },
+            { q: "Who holds the record for the most centuries in Test cricket history (51 centuries)?", opts: ["Ricky Ponting", "Jacques Kallis", "Sachin Tendulkar", "Rahul Dravid"], ans: 2 },
+            { q: "Which international stadium is situated at the highest altitude in the world?", opts: ["Dharamshala (India)", "Chail Cricket Ground (India)", "Johannesburg (South Africa)", "Kathmandu (Nepal)"], ans: 1 },
+            { q: "What happens if a dead ball hits a bird in flight during live play?", opts: ["5 penalty runs", "Ball is declared dead instantly and re-bowled", "Play continues normally", "4 runs awarded to batting side"], ans: 1 },
+            { q: "Who was the first player to be given out under the Umpire Decision Review System (DRS) in Test cricket?", opts: ["Sachin Tendulkar", "Rahul Dravid", "Brian Lara", "Ricky Ponting"], ans: 1 },
+            { q: "Which batter holds the record for scoring 100 international centuries?", opts: ["Ricky Ponting", "Virat Kohli", "Sachin Tendulkar", "Sir Donald Bradman"], ans: 2 },
+            { q: "Who has bowled the fastest recorded delivery in cricket history (161.3 km/h or 100.23 mph)?", opts: ["Brett Lee", "Shoaib Akhtar", "Shaun Tait", "Mitchell Starc"], ans: 1 },
+            { q: "Which country has won the most ICC Women's Cricket World Cups (50-over format)?", opts: ["England", "Australia", "New Zealand", "India"], ans: 1 },
+            { q: "What is the height of the cricket stumps above the pitch level?", opts: ["26 inches (66.0 cm)", "28 inches (71.1 cm)", "30 inches (76.2 cm)", "32 inches (81.3 cm)"], ans: 1 },
+            { q: "Who scored the fastest triple century in Test cricket (off 278 balls)?", opts: ["Virender Sehwag", "Matthew Hayden", "Chris Gayle", "Sir Garfield Sobers"], ans: 0 },
+            { q: "What is the official weight of a standard Men's international cricket ball?", opts: ["4.5 to 4.75 oz (127–134 g)", "5.5 to 5.75 oz (155.9–163 g)", "6.0 to 6.25 oz (170–177 g)", "6.5 to 6.75 oz (184–191 g)"], ans: 1 },
+            { q: "Which country contested the famous 'Tie Test' against Australia in 1960 at Brisbane?", opts: ["England", "West Indies", "India", "Pakistan"], ans: 1 },
+            { q: "Who was the first bowler to take 500 wickets in ODI cricket history?", opts: ["Wasim Akram", "Muttiah Muralitharan", "Waqar Younis", "Chaminda Vaas"], ans: 0 },
+            { q: "What does the fielding position 'Gully' sit adjacent to?", opts: ["Mid-off", "Slips", "Square Leg", "Mid-wicket"], ans: 1 },
+            { q: "Who scored the highest individual score in Women's ODI history (232 not out)?", opts: ["Belinda Clark", "Amelia Kerr", "Alyssa Healy", "Charlotte Edwards"], ans: 1 },
+            { q: "Which bowler has taken all 10 wickets in a single Test inning?", opts: ["Jim Laker", "Anil Kumble", "Ajaz Patel", "All of the above"], ans: 3 },
+            { q: "In which country is the famous Eden Park cricket ground located?", opts: ["Australia", "New Zealand", "South Africa", "England"], ans: 1 },
+            { q: "How many fielders are allowed outside the 30-yard circle during mandatory Powerplay 1 in a standard ODI?", opts: ["2", "3", "4", "5"], ans: 0 },
+            { q: "Who holds the record for most runs in a single ICC Men's 50-over World Cup tournament?", opts: ["Sachin Tendulkar", "Virat Kohli", "Matthew Hayden", "Rohit Sharma"], ans: 1 },
+            { q: "Which country hosted the 1992 ICC Men's Cricket World Cup?", opts: ["England", "India & Pakistan", "Australia & New Zealand", "South Africa"], ans: 2 },
+            { q: "Who was the first batter to hit six 6s in an over in first-class cricket?", opts: ["Sir Garfield Sobers", "Ravi Shastri", "Sir Vivian Richards", "Herschelle Gibbs"], ans: 0 },
+            { q: "What is the minimum length of the pitch popping crease extension on either side of the stumps?", opts: ["4 feet (1.22 m)", "6 feet (1.83 m)", "8 feet (2.44 m)", "12 feet (3.66 m)"], ans: 2 },
+            { q: "Which team holds the record for winning the most IPL titles (tied at 5 titles with CSK)?", opts: ["Kolkata Knight Riders", "Mumbai Indians", "Sunrisers Hyderabad", "Gujarat Titans"], ans: 1 },
+            { q: "Who scored the fastest century in IPL history off just 30 balls?", opts: ["AB de Villiers", "Chris Gayle", "Yusuf Pathan", "David Warner"], ans: 1 },
+            { q: "In Test cricket, what is the minimum number of overs that must be bowled on a full scheduled day of play?", opts: ["80 overs", "85 overs", "90 overs", "100 overs"], ans: 2 },
+            { q: "Who was the captain of Australia during their unbeaten 1999–2007 ICC World Cup streak winning run?", opts: ["Mark Taylor", "Steve Waugh & Ricky Ponting", "Allan Border", "Michael Clarke"], ans: 1 },
+            { q: "What is the term used when a bowler takes three wickets with three consecutive deliveries?", opts: ["Trifecta", "Triple strike", "Hat-trick", "Clean sweep"], ans: 2 },
+            { q: "Who was the first spin bowler to take 500 Test wickets?", opts: ["Anil Kumble", "Shane Warne", "Muttiah Muralitharan", "Harbhajan Singh"], ans: 1 },
+            { q: "What is the length of a standard cricket pitch measured from popping crease to popping crease?", opts: ["58 feet (17.68 m)", "60 feet (18.29 m)", "66 feet (20.12 m)", "44 feet (13.41 m)"], ans: 0 },
+            { q: "Which country hosted the first-ever official night Test match (Day/Night Test) in 2015?", opts: ["England", "Australia (vs New Zealand at Adelaide)", "South Africa", "India"], ans: 1 },
+            { q: "Who was the first batter in Men's T20 Internationals to reach 4,000 career runs?", opts: ["Rohit Sharma", "Virat Kohli", "Martin Guptill", "Babar Azam"], ans: 1 },
+            { q: "Which bowler delivered the fastest recorded ball by an Indian fast bowler in international cricket?", opts: ["Jasprit Bumrah", "Umran Malik", "Javagal Srinath", "Mohammed Shami"], ans: 1 },
+            { q: "What happens if a fielder deliberately distracts or obstructs a batter during play according to Law 41?", opts: ["5 penalty runs awarded to the batting side + dead ball", "4 runs awarded", "The bowler is warned", "Batter is given out"], ans: 0 },
+            { q: "Who holds the record for the highest individual score in a Women's Test inning (242 runs)?", opts: ["Ellyse Perry", "Kiran Baluch", "Mithali Raj", "Tammy Beaumont"], ans: 1 },
+            { q: "Which ground is home to the famous 'Great Stand' named after Sir Donald Bradman?", opts: ["Melbourne Cricket Ground (MCG)", "Sydney Cricket Ground (SCG)", "Adelaide Oval", "The Gabba"], ans: 2 },
+            { q: "Who was the first fast bowler to reach 600 Test wickets?", opts: ["Glenn McGrath", "James Anderson", "Stuart Broad", "Courtney Walsh"], ans: 1 },
+            { q: "What is the minimum weight of a standard Women's international cricket ball?", opts: ["4.0 oz (113 g)", "4.94 oz (140 g)", "5.5 oz (155.9 g)", "5.75 oz (163 g)"], ans: 1 },
+            { q: "Who won the 2022 ICC Men's T20 World Cup played in Australia?", opts: ["Pakistan", "England", "India", "Australia"], ans: 1 },
+            { q: "What is the name of the award given annually to the ICC Men's Cricketer of the Year?", opts: ["Allan Border Medal", "Sir Garfield Sobers Trophy", "Wisden Leading Cricketer Trophy", "Bradman Award"], ans: 1 },
+            { q: "Which player has played the most international matches across all formats combined (664 matches)?", opts: ["Mahela Jayawardene", "Sachin Tendulkar", "Ricky Ponting", "Kumar Sangakkara"], ans: 1 },
+            { q: "How many total fielders can be on the leg side at any given time?", opts: ["4", "5", "6", "Maximum 5 behind square on the leg side / 9 total leg side limit"], ans: 3 },
+            { q: "What is the maximum number of fielders permitted behind square on the leg side at the instant of the bowler's delivery?", opts: ["2", "3", "4", "5"], ans: 0 },
+            { q: "Who hit the winning runs for England in the 2019 ICC World Cup final Super Over?", opts: ["Ben Stokes", "Jos Buttler", "Jofra Archer", "Jonny Bairstow"], ans: 1 },
+            { q: "Which West Indian legend was nicknamed 'The Master Blaster' before Virat Kohli or Sachin Tendulkar?", opts: ["Sir Garfield Sobers", "Sir Vivian Richards", "Clive Lloyd", "Desmond Haynes"], ans: 1 },
+            { q: "Who holds the record for the fastest Test half-century off just 21 balls?", opts: ["Misbah-ul-Haq", "Brendon McCullum", "Jacques Kallis", "David Warner"], ans: 0 },
+            { q: "Which bowler was the first to take a hat-trick in T20 International cricket?", opts: ["Brett Lee", "Umar Gul", "Rashid Khan", "Lasith Malinga"], ans: 3 },
+            { q: "What is the maximum height of the cricket bails above the stumps?", opts: ["0.5 inches (1.27 cm)", "0.625 inches (1.59 cm)", "0.75 inches (1.91 cm)", "1.0 inch (2.54 cm)"], ans: 2 },
+            { q: "Which Asian country won its first and only ICC 50-over World Cup in 1996?", opts: ["India", "Pakistan", "Sri Lanka", "Bangladesh"], ans: 2 },
+            { q: "Who was the first batter to score 10,000 runs in ODI cricket history?", opts: ["Desmond Haynes", "Sachin Tendulkar", "Inzamam-ul-Haq", "Brian Lara"], ans: 1 },
+            { q: "What is the width of the pitch crease return lines (return creases)?", opts: ["4 feet 4 inches (1.32 m)", "8 feet 8 inches (2.64 m)", "12 feet (3.66 m)", "6 feet (1.83 m)"], ans: 1 },
+            { q: "Which English bowler famously bowled the 'Bodyline' tactics in the 1932–33 Ashes series?", opts: ["Harold Larwood", "Bill Voce", "Douglas Jardine", "Gubby Allen"], ans: 0 },
+            { q: "Who holds the record for the most catches as a non-wicketkeeper in Test cricket history (210 catches)?", opts: ["Ricky Ponting", "Rahul Dravid", "Jacques Kallis", "Mahela Jayawardene"], ans: 1 },
+            { q: "Which stadium in India is the largest cricket stadium in the world by seating capacity?", opts: ["Eden Gardens (Kolkata)", "Narendra Modi Stadium (Ahmedabad)", "Wankhede Stadium (Mumbai)", "M. A. Chidambaram Stadium (Chennai)"], ans: 1 },
+            { q: "What happens if a bowler steps over the popping crease with their front foot in live play?", opts: ["Dead ball", "No ball + 1 run + Free Hit (in limited overs)", "Wide ball", "Warning from umpire"], ans: 1 },
+            { q: "Who was the captain of the West Indies team during their back-to-back World Cup victories in 1975 and 1979?", opts: ["Sir Vivian Richards", "Clive Lloyd", "Sir Frank Worrell", "Alvin Kallicharran"], ans: 1 },
+            { q: "Which country won the 2024 ICC Men's T20 World Cup?", opts: ["South Africa", "India", "Australia", "England"], ans: 1 },
+            { q: "Who holds the record for the most sixes hit in international cricket history across formats?", opts: ["Chris Gayle", "Rohit Sharma", "Shahid Afridi", "Brendon McCullum"], ans: 1 },
+            { q: "What is the term for a match in which both teams finish with the exact same score after both innings are completed in Test cricket?", opts: ["Draw", "Tie", "Abandoned", "No Result"], ans: 1 },
+            { q: "How many Tied Tests have occurred in the entire history of Test cricket?", opts: ["1", "2", "3", "5"], ans: 1 },
+            { q: "Who was the first Indian bowler to take a hat-trick in Test cricket?", opts: ["Kapil Dev", "Harbhajan Singh", "Chetan Sharma", "Jasprit Bumrah"], ans: 1 },
+            { q: "Which Indian bowler was the first to take a hat-trick in a World Cup match (1987 vs New Zealand)?", opts: ["Kapil Dev", "Chetan Sharma", "Javagal Srinath", "Mohammed Shami"], ans: 1 },
+            { q: "What is the maximum total duration allowed for an official lunch break in a standard Test match?", opts: ["30 minutes", "40 minutes", "45 minutes", "60 minutes"], ans: 1 },
+            { q: "Who holds the record for the highest individual score in a T20 match across all competitions (175 not out)?", opts: ["Chris Gayle", "Aaron Finch", "AB de Villiers", "Brendon McCullum"], ans: 0 },
+            { q: "Which cricket ground is famously known as 'The Gabba'?", opts: ["Melbourne Cricket Ground", "Brisbane Cricket Ground", "Sydney Cricket Ground", "Perth Stadium"], ans: 1 },
+            { q: "Who was named Player of the Tournament in the 2023 ICC Men's Cricket World Cup?", opts: ["Travis Head", "Virat Kohli", "Mohammed Shami", "Glenn Maxwell"], ans: 1 },
+            { q: "What is the legal outcome if a batter hits a ball directly into a protective helmet placed behind the wicketkeeper on the ground?", opts: ["4 runs", "5 penalty runs to batting side", "Dead ball", "Batter is out"], ans: 1 },
+            { q: "Which fast bowler held the record for the most Test wickets before Shane Warne and Muttiah Muralitharan broke it?", opts: ["Sir Richard Hadlee", "Courtney Walsh", "Kapil Dev", "Dennis Lillee"], ans: 1 },
+            { q: "Who was the first player to captain their side in 200 T20 matches?", opts: ["Rohit Sharma", "MS Dhoni", "Virat Kohli", "Daren Sammy"], ans: 1 },
+            { q: "What is a 'Pair' in Test cricket?", opts: ["Scoring two consecutive fifties in a match", "Getting dismissed for a duck (zero) in both innings of a Test match", "Opening the batting in both innings", "Taking 2 wickets in 2 balls"], ans: 1 },
+            { q: "Which country won the 2023 ICC Men's Cricket World Cup held in India?", opts: ["India", "Australia", "South Africa", "England"], ans: 1 },
+            { q: "Who holds the record for the fastest century in Test match history by an Indian batter (off 74 balls)?", opts: ["Virender Sehwag", "Kapil Dev", "Rishabh Pant", "Mohammad Azharuddin"], ans: 1 },
+            { q: "Which field position is directly behind the bowler on the boundary line?", opts: ["Long-on", "Long-off", "Straight Long-off / Straight Boundary", "Deep Mid-wicket"], ans: 2 },
+            { q: "What is the maximum distance allowed from the pitch center to the boundary edge according to ICC guidelines?", opts: ["80 yards (73.15 m)", "85 yards (77.72 m)", "90 yards (82.29 m)", "95 yards (86.87 m)"], ans: 2 },
+            { q: "Who was the first batter in history to reach 10,000 runs in One Day Internationals?", opts: ["Sachin Tendulkar", "Brian Lara", "Inzamam-ul-Haq", "Desmond Haynes"], ans: 0 },
+            { q: "Which English ground is famous for its distinct slope across the outfield from north to south?", opts: ["The Oval", "Lord's", "Edgbaston", "Headingley"], ans: 1 },
+            { q: "In T20 Internationals, how many fielders are allowed outside the 30-yard circle during non-Powerplay overs?", opts: ["4", "5", "6", "3"], ans: 1 },
+            { q: "Who held the record for the highest individual score in Test history (375 runs) before Brian Lara broke it, lost it to Matthew Hayden, and reclaimed it with 400*?", opts: ["Sir Garfield Sobers", "Brian Lara", "Sir Donald Bradman", "Hanif Mohammad"], ans: 1 },
+            { q: "Which country won the 2014 ICC Men's T20 World Cup held in Bangladesh?", opts: ["India", "Sri Lanka", "West Indies", "Pakistan"], ans: 1 },
+            { q: "What is the term for a batter being dismissed off the very first ball of a match?", opts: ["Golden Duck", "Silver Duck", "Royal Duck / Diamond Duck", "King Pair"], ans: 2 },
+            { q: "Who was the first bowler to bowl a maiden over in T20 Internationals?", opts: ["Jasprit Bumrah", "Shaun Pollock", "Mohammad Amir", "Daniel Vettori"], ans: 1 },
+            { q: "What is the minimum permitted length of a boundary from the center of the pitch in international cricket?", opts: ["55 yards (50.29 m)", "60 yards (54.86 m)", "65 yards (59.43 m)", "70 yards (64.01 m)"], ans: 2 },
+            { q: "Which country won the inaugural ICC Champions Trophy (then called the ICC KnockOut Tournament) in 1998?", opts: ["South Africa", "India", "New Zealand", "Australia"], ans: 3 },
+            { q: "Who was the captain of the Pakistan team that won the 1992 ICC Cricket World Cup?", opts: ["Wasim Akram", "Imran Khan", "Javed Miandad", "Rameez Raja"], ans: 1 },
+            { q: "Which bowler holds the record for the best bowling figures in an ODI match (8 wickets for 19 runs)?", opts: ["Chaminda Vaas", "Shahid Afridi", "Glenn McGrath", "Muttiah Muralitharan"], ans: 0 },
+            { q: "In Test cricket, after how many overs can the fielding team request a new ball?", opts: ["75 overs", "80 overs", "85 overs", "90 overs"], ans: 1 },
+            { q: "Who is the fastest batter to reach 10,000 runs in ODI cricket in terms of innings played (205 innings)?", opts: ["Sachin Tendulkar", "Virat Kohli", "Rohit Sharma", "Ricky Ponting"], ans: 1 },
+            { q: "Which Australian bowler took a hat-trick on his birthday in a Test match against England in 2010?", opts: ["Mitchell Johnson", "Peter Siddle", "Shane Warne", "Ryan Harris"], ans: 1 },
+            { q: "What signal does the umpire make by raising a hand above the head and tapping the palm on top of the head?", opts: ["Out", "No Ball", "Bouncer / Short-pitched ball warning", "Penalty Runs"], ans: 2 },
+            { q: "Who holds the record for the most double centuries (12) in Test cricket history?", opts: ["Kumar Sangakkara", "Sir Donald Bradman", "Brian Lara", "Viru Sehwag"], ans: 1 },
+            { q: "Which country hosted the 2003 ICC Men's Cricket World Cup alongside Zimbabwe and Kenya?", opts: ["West Indies", "South Africa", "Australia", "England"], ans: 1 },
+            { q: "Who was the first Indian cricketer to score a triple century in Test cricket (309 vs Pakistan)?", opts: ["Rahul Dravid", "Virender Sehwag", "VVS Laxman", "Karun Nair"], ans: 1 },
+            { q: "What is the official length of a cricket bail placed on top of the stumps?", opts: ["4.0 inches (10.16 cm)", "4.375 inches (11.11 cm)", "4.5 inches (11.43 cm)", "5.0 inches (12.7 cm)"], ans: 1 },
+            { q: "Which team won the 2016 ICC Men's T20 World Cup with Carlos Brathwaite hitting four consecutive sixes in the final over?", opts: ["England", "West Indies", "India", "Australia"], ans: 1 },
+            { q: "Who holds the record for the most dismissals as a wicketkeeper in ODI history (482 dismissals)?", opts: ["Adam Gilchrist", "Kumar Sangakkara", "MS Dhoni", "Mark Boucher"], ans: 1 },
+            { q: "Which bowler has taken the most wickets in a single ICC 50-over World Cup tournament (27 wickets in 2019)?", opts: ["Glenn McGrath", "Mitchell Starc", "Mohammed Shami", "Trent Boult"], ans: 1 },
+            { q: "What happens if a bowler bowls a wide ball that also travels all the way to the boundary line?", opts: ["4 runs awarded total", "5 runs awarded total (1 wide + 4 boundary)", "6 runs awarded total", "Re-bowl only with no extra runs"], ans: 1 },
+            { q: "Who was the first player to hit 100 sixes in Test cricket?", opts: ["Chris Gayle", "Adam Gilchrist", "Brendon McCullum", "Sir Vivian Richards"], ans: 1 },
+            { q: "Which stadium in Australia is famously referred to as 'The Furnace'?", opts: ["The Gabba", "WACA Ground (Perth)", "Adelaide Oval", "SCG"], ans: 1 },
+            { q: "Who hit the fastest T20 International century off just 27 balls for Estonia in 2024?", opts: ["Sahil Chauhan", "Jan Nicol Loftie-Eaton", "Kushal Malla", "Chris Gayle"], ans: 0 },
+            { q: "Which country won the 2017 ICC Champions Trophy by defeating India in the final?", opts: ["Pakistan", "England", "Sri Lanka", "New Zealand"], ans: 0 },
+            { q: "What is the distance between the two sets of bowling creases?", opts: ["20 yards (18.29 m)", "22 yards (20.12 m)", "21 yards (19.20 m)", "24 yards (21.95 m)"], ans: 0 },
+            { q: "Who holds the record for the most sixes in an individual ODI innings (16 sixes)?", opts: ["Rohit Sharma", "AB de Villiers", "Eoin Morgan", "All of the above (tied at 16)"], ans: 3 },
+            { q: "Which West Indian fast bowler was nicknamed 'The Whispering Death'?", opts: ["Michael Holding", "Malcolm Marshall", "Joel Garner", "Curtly Ambrose"], ans: 0 },
+            { q: "What signal does an umpire give by crossing their wrists down in front of their waist?", opts: ["Dead Ball", "Short Run", "Cancel previous signal", "Leg Bye"], ans: 1 },
+            { q: "Who was the first batter to score centuries in all three international formats (Test, ODI, T20I)?", opts: ["Chris Gayle", "Suresh Raina", "Mahela Jayawardene", "Tillakaratne Dilshan"], ans: 1 },
+            { q: "Which country won the inaugural ICC Men's World Test Championship (2019–2021)?", opts: ["India", "New Zealand", "Australia", "England"], ans: 1 },
+            { q: "Who holds the record for taking the fastest 500 Test wickets in terms of matches played (87 matches)?", opts: ["Shane Warne", "Muttiah Muralitharan", "Ravichandran Ashwin", "Anil Kumble"], ans: 2 },
+            { q: "What is a 'King Pair' in Test cricket?", opts: ["Out for zero on the first ball in both innings", "Out for zero in both innings without facing a ball", "Scoring double centuries in both innings", "Hitting consecutive sixes to start both innings"], ans: 0 },
+            { q: "Which venue in South Africa is known as 'The Wanderers'?", opts: ["Cape Town", "Johannesburg", "Durban", "Centurion"], ans: 1 },
+            { q: "Who was the captain of the Australian team that won the 2015 ICC Men's Cricket World Cup?", opts: ["Ricky Ponting", "Michael Clarke", "Steve Smith", "Aaron Finch"], ans: 1 },
+            { q: "What is the maximum number of fielders allowed on the boundary during a Super Over in T20 matches?", opts: ["2 fielders", "3 fielders", "4 fielders", "5 fielders"], ans: 0 },
+            { q: "Who was the first bowler to take 400 wickets in ODI cricket?", opts: ["Wasim Akram", "Waqar Younis", "Muttiah Muralitharan", "Chaminda Vaas"], ans: 0 },
+            { q: "Which country hosted the 1987 ICC Men's Cricket World Cup (the first held outside England)?", opts: ["India & Pakistan", "Australia & New Zealand", "West Indies", "South Africa"], ans: 0 },
+            { q: "What is the height of the stumps above the pitch according to MCC Laws?", opts: ["27 inches (68.58 cm)", "28 inches (71.12 cm)", "29 inches (73.66 cm)", "30 inches (76.20 cm)"], ans: 1 },
+            { q: "Who holds the record for the most catches in a single Test match by a non-wicketkeeper (8 catches)?", opts: ["Ajinkya Rahane", "Rahul Dravid", "Stephen Fleming", "Steve Smith"], ans: 0 },
+            { q: "Which bowler famously took 19 wickets in a single Test match against Australia in 1956?", opts: ["Jim Laker", "Sydney Barnes", "Fred Trueman", "Alec Bedser"], ans: 0 },
+            { q: "Who scored the first-ever century in T20 International history during the 2007 T20 World Cup?", opts: ["Yuvraj Singh", "Chris Gayle", "Brendon McCullum", "Herschelle Gibbs"], ans: 1 },
+            { q: "What is the name of the official ball brand traditionally used in Test matches in India?", opts: ["Kookaburra", "Duke", "SG (Sanspareils Greenlands)", "Reader"], ans: 2 },
+            { q: "Which team won the 2023 ICC Women's T20 World Cup?", opts: ["South Africa", "Australia", "England", "India"], ans: 1 },
+            { q: "Who holds the record for the most runs scored in a single IPL season (973 runs in 2016)?", opts: ["Jos Buttler", "Virat Kohli", "David Warner", "Shubman Gill"], ans: 1 }
+        ];
+
+        let activeQuizQuestions = [];
+        let quizIdx = 0;
+        let streak = 0;
+
+        function initJumbledQuiz() {
+            activeQuizQuestions = [...masterQuizBank].sort(() => Math.random() - 0.5);
+            quizIdx = 0;
+            loadCurrentQuizQuestion();
+        }
+
+        function loadCurrentQuizQuestion() {
+            if (!activeQuizQuestions.length) return;
+            if (quizIdx >= activeQuizQuestions.length) {
+                activeQuizQuestions = [...masterQuizBank].sort(() => Math.random() - 0.5);
+                quizIdx = 0;
+            }
+            let qObj = activeQuizQuestions[quizIdx];
+            document.getElementById('quiz-q').innerText = qObj.q;
+            let optsHtml = "";
+            qObj.opts.forEach((opt, idx) => {
+                optsHtml += `<button class="btn" style="background:var(--card-bg); border:1px solid var(--border); color:var(--text); text-align:left; margin-bottom: 8px;" onclick="answerQuiz(${idx}, ${qObj.ans})">${opt}</button>`;
+            });
+            document.getElementById('quiz-opts').innerHTML = optsHtml;
+            document.getElementById('quiz-msg').innerText = "";
+        }
+
+        function answerQuiz(selected, correct) {
+            if (selected === correct) {
+                streak++;
+                quizIdx++;
+                document.getElementById('quiz-streak').innerText = streak;
+                document.getElementById('quiz-msg').style.color = "var(--accent)";
+                document.getElementById('quiz-msg').innerText = "Correct! Moving to next question...";
+                setTimeout(loadCurrentQuizQuestion, 600);
+            } else {
+                streak = 0;
+                document.getElementById('quiz-streak').innerText = streak;
+                document.getElementById('quiz-msg').style.color = "var(--danger)";
+                document.getElementById('quiz-msg').innerText = "Incorrect! Streak reset to 0. Shuffling question bank!";
+                setTimeout(initJumbledQuiz, 1200);
+            }
+        }
+
+        // --- 25 PLAYERS POOL ($90M Purse) ---
+        const auctionPool = [
+            // 10 Batsmen
+            { name: "Virat Kohli", role: "Batsman", matches: 252, runs: 8004, base: 2.0 },
+            { name: "Rohit Sharma", role: "Batsman", matches: 257, runs: 6628, base: 2.0 },
+            { name: "Shubman Gill", role: "Batsman", matches: 103, runs: 3216, base: 2.0 },
+            { name: "Suryakumar Yadav", role: "Batsman", matches: 150, runs: 3594, base: 2.0 },
+            { name: "Yashasvi Jaiswal", role: "Batsman", matches: 53, runs: 1550, base: 1.5 },
+            { name: "Rinku Singh", role: "Batsman", matches: 45, runs: 893, base: 1.2 },
+            { name: "Travis Head", role: "Batsman", matches: 26, runs: 890, base: 1.5 },
+            { name: "Ruturaj Gaikwad", role: "Batsman", matches: 66, runs: 2380, base: 1.8 },
+            { name: "Virat Singh", role: "Batsman", matches: 20, runs: 450, base: 0.8 },
+            { name: "Devdutt Padikkal", role: "Batsman", matches: 60, runs: 1520, base: 1.0 },
+
+            // 10 Bowlers
+            { name: "Jasprit Bumrah", role: "Bowler", matches: 133, wickets: 165, base: 2.0 },
+            { name: "Rashid Khan", role: "Bowler", matches: 121, wickets: 149, base: 2.0 },
+            { name: "Arshdeep Singh", role: "Bowler", matches: 65, wickets: 76, base: 1.5 },
+            { name: "Mayank Yadav", role: "Bowler", matches: 10, wickets: 20, base: 1.0 },
+            { name: "Yuzvendra Chahal", role: "Bowler", matches: 160, wickets: 205, base: 2.0 },
+            { name: "Mohammed Shami", role: "Bowler", matches: 110, wickets: 127, base: 2.0 },
+            { name: "Kagiso Rabada", role: "Bowler", matches: 72, wickets: 117, base: 1.8 },
+            { name: "Trent Boult", role: "Bowler", matches: 104, wickets: 121, base: 1.8 },
+            { name: "Kuldeep Yadav", role: "Bowler", matches: 79, wickets: 83, base: 1.5 },
+            { name: "Harshal Patel", role: "Bowler", matches: 95, wickets: 115, base: 1.2 },
+
+            // 5 All-Rounders
+            { name: "Hardik Pandya", role: "All-Rounder", matches: 137, runs: 2526, wickets: 64, base: 2.0 },
+            { name: "Ravindra Jadeja", role: "All-Rounder", matches: 240, runs: 2959, wickets: 160, base: 2.0 },
+            { name: "Sunil Narine", role: "All-Rounder", matches: 177, runs: 1400, wickets: 180, base: 2.0 },
+            { name: "Pat Cummins", role: "All-Rounder", matches: 62, runs: 410, wickets: 70, base: 2.0 },
+            { name: "Axar Patel", role: "All-Rounder", matches: 150, runs: 1650, wickets: 120, base: 1.8 }
+        ];
+
+        let aucIdx = 0, currentBid = 2.0, bidLeader = "Unsold";
+        const iplTeamsList = ["CSK", "RCB", "MI", "KKR", "SRH", "DC", "RR", "LSG", "GT", "PBKS"];
+
+        function loadAuctionPlayer() {
+            if (aucIdx >= auctionPool.length) {
+                document.getElementById('auc-player-name').innerText = "IPL Mega Auction Concluded!";
+                document.getElementById('auc-card-details').innerText = "All 25 players have been successfully processed.";
+                document.getElementById('auc-controls').style.display = 'none';
+                return;
+            }
+            let p = auctionPool[aucIdx];
+            document.getElementById('auc-player-name').innerText = p.name;
+            document.getElementById('auc-card-details').innerHTML = `
+                <strong>Role:</strong> ${p.role}<br>
+                <strong>Matches:</strong> ${p.matches} | ${p.runs ? 'Runs: ' + p.runs : 'Wickets: ' + p.wickets}<br>
+                <strong>Base Price:</strong> $${p.base}M
+            `;
+            currentBid = p.base;
+            bidLeader = "Unsold";
+            document.getElementById('auc-player-price').innerText = `$${currentBid}M`;
+            document.getElementById('auc-highest-bidder').innerText = "(Unsold)";
+        }
+
+        function placeAuctionBid(inc) {
+            let p = auctionPool[aucIdx];
+            if (appState.purse >= currentBid + inc) {
+                currentBid += inc;
+                bidLeader = "You (User Franchise)";
+                document.getElementById('auc-player-price').innerText = `$${currentBid.toFixed(1)}M`;
+                document.getElementById('auc-highest-bidder').innerText = `(${bidLeader})`;
+
+                setTimeout(() => {
+                    if (bidLeader.includes("You") && Math.random() > 0.1 && currentBid < 9.5) {
+                        currentBid += 2.0;
+                        bidLeader = iplTeamsList[Math.floor(Math.random() * iplTeamsList.length)];
+                        document.getElementById('auc-player-price').innerText = `$${currentBid.toFixed(1)}M`;
+                        document.getElementById('auc-highest-bidder').innerText = `(${bidLeader} AI - Aggressive!)`;
+                    }
+                }, 600);
+            } else {
+                alert("Insufficient funds in your franchise purse!");
+            }
+        }
+
+        function passAuctionPlayer() {
+            let p = auctionPool[aucIdx];
+            if (bidLeader.includes("You")) {
+                appState.purse -= currentBid;
+                appState.squad.push({ name: p.name, role: p.role, price: currentBid });
+                updateAuctionUI();
+                alert(`Successfully signed ${p.name} for $${currentBid.toFixed(1)}M!`);
+            } else {
+                alert(`${p.name} sold to ${bidLeader}!`);
+            }
+            aucIdx++;
+            loadAuctionPlayer();
+        }
+
+        function updateAuctionUI() {
+            document.getElementById('team-purse').innerText = `$${appState.purse.toFixed(1)}M`;
+            document.getElementById('header-purse').innerText = `💰 Purse: $${appState.purse.toFixed(1)}M`;
+            document.getElementById('team-count').innerText = appState.squad.length;
+            
+            document.getElementById('team-roster').innerHTML = appState.squad.map(s => `
+                <div class="player-card-box">
+                    <strong>${s.name}</strong> (${s.role}) — <span style="color:var(--accent)">$${s.price.toFixed(1)}M</span>
+                </div>
+            `).join('');
+
+            document.getElementById('playing-xi-box').innerHTML = appState.squad.map(s => `
+                <div class="player-card-box">
+                    <strong>${s.name}</strong> — ${s.role}
+                </div>
+            `).join('');
+        }
+
+        const tourneyStagesDesc = ["Quarter-Finals", "Semi-Finals", "Grand Finals"];
+
+        function simulateMatchFixture() {
+            if (appState.squad.length < 11) {
+                alert(`You have ${appState.squad.length} players. You need at least 11 players in your squad to simulate tournament matches!`);
+                switchTab('auction', document.querySelector('nav button:nth-child(2)'));
+                return;
+            }
+            if (appState.tourneyStage >= 3) {
+                alert("Tournament is already completed!");
+                return;
+            }
+
+            let opponent = iplTeamsList[Math.floor(Math.random() * iplTeamsList.length)];
+            let userScore = 165 + Math.floor(Math.random() * 40);
+            let userWickets = 2 + Math.floor(Math.random() * 5);
+            let aiScore = userScore + (Math.random() > 0.4 ? -8 : 10);
+            let aiWickets = 4 + Math.floor(Math.random() * 5);
+            let userWon = userScore >= aiScore;
+
+            let scorecardHTML = `
+                <strong>Match:</strong> Your Squad vs ${opponent}<br>
+                <strong>Stage:</strong> ${tourneyStagesDesc[appState.tourneyStage]}<br><br>
+                🏏 <strong>Your Innings:</strong> ${userScore} / ${userWickets} (20 Overs)<br>
+                ⚾ <strong>${opponent} Innings:</strong> ${aiScore} / ${aiWickets} (20 Overs)<br><br>
+                <em>Result:</em> <strong style="color:${userWon ? 'var(--accent)' : 'var(--danger)'};">${userWon ? 'You won by ' + (userScore - aiScore) + ' runs!' : opponent + ' won by ' + (aiScore - userScore) + ' runs!'}</strong>
+            `;
+
+            document.getElementById('match-scorecard-box').innerHTML = scorecardHTML;
+
+            if (userWon) {
+                appState.tourneyStage++;
+                if (appState.tourneyStage === 3) {
+                    appState.coins += 1000;
+                    document.getElementById('header-coins').innerText = `🪙 ${appState.coins} Coins`;
+                    document.getElementById('tourney-status').innerText = "Champion Trophy Lifted!";
+                    alert("🏆 Incredible! Your Playing XI won the Grand Finals and lifted the IPL Trophy! +1,000 Coins added!");
+                    document.getElementById('sim-match-btn').style.display = 'none';
+                } else {
+                    document.getElementById('tourney-status').innerText = `Stage: ${tourneyStagesDesc[appState.tourneyStage]}`;
+                }
+            } else {
+                alert(`Your squad was defeated by ${opponent}. Resetting knockout bracket...`);
+                appState.tourneyStage = 0;
+                document.getElementById('tourney-status').innerText = `Stage: ${tourneyStagesDesc[0]}`;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initJumbledQuiz();
+            loadAuctionPlayer();
+        });
+    </script>
+</body>
+</html>
